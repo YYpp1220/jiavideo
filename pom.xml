@@ -6,6 +6,8 @@
 	<modelVersion>4.0.0</modelVersion>
     <modules>
         <module>jv-register</module>
+        <module>jv-system</module>
+        <module>jv-gateway</module>
     </modules>
     <!-- 配置父级 (版本锁定、插件锁定) -->
 	<parent>

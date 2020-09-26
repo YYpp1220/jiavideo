@@ -14,11 +14,11 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @EnableEurekaServer
 public class JvRegisterApplication {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JvRegisterApplication.class);
+    /*private static final Logger LOG = LoggerFactory.getLogger(JvRegisterApplication.class);*/
 
     public static void main(String[] args){
         // 运行spring应用
         SpringApplication.run(JvRegisterApplication.class, args);
-        LOG.info("启动成功");
+        /*LOG.info("启动成功");*/
     }
 }

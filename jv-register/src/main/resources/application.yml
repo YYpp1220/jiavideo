@@ -11,3 +11,8 @@ eureka:
     register-with-eureka: false
     service-url:
       defaultZone: http://127.0.0.1:10086/eureka
+
+logging:
+  level:
+    com.jiavideo: debug
+    org.springframework: debug

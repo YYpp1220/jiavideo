@@ -1,0 +1,30 @@
+server:
+  port: 10010
+
+spring:
+  application:
+    name: jv-gayeway
+  cloud:
+    gateway:
+      # 路由转发
+      routes:
+      # 对应模块所在名称
+      - id: jv-system
+        # 对应模块url
+        uri: http://127.0.0.1:8086
+        predicates:
+          # 转发所添加的路径
+          - Path=/system/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 5  #  从eureka服务器注册表中获取注册信息的时间间隔（s），默认为30秒
+    instance-info-replication-interval-seconds: 5 #  复制实例变化信息到eureka服务器所需要的时间间隔（s），默认为30秒
+    initial-instance-info-replication-interval-seconds: 5 # 最初复制实例信息到eureka服务器所需的时间（s），默认为40秒
+
+logging:
+  level:
+    com.jiavideo.gateway: debug
+    org.springframework: debug
