@@ -8,6 +8,9 @@
         <module>jv-register</module>
         <module>jv-system</module>
         <module>jv-gateway</module>
+        <module>jv-pojo</module>
+        <module>jv-common</module>
+        <module>jv-api</module>
     </modules>
     <!-- 配置父级 (版本锁定、插件锁定) -->
 	<parent>
