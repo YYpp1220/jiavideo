@@ -1,11 +1,11 @@
 server:
-  port: 8086
+  port: 8087
   servlet:
-    context-path: /system
+    context-path: /business
 
 spring:
   application:
-    name: jv-system
+    name: jv-business
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.203.128:3306/jiavideo?useSSL=false&serverTimezone=UTC&characterEncoding=utf-8
@@ -46,4 +46,4 @@ mybatis:
 
 logging:
   level:
-    com.jiavideo.system: debug
+    com.jiavideo.business: debug
