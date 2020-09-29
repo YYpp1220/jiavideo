@@ -6,6 +6,13 @@
 
 <script>
     export default {
-        name: "welcome"
+        name: "welcome",
+        methods: {
+
+        },
+        mounted() {
+            //sidebar激活样式方法一
+            //this.$parent.activeSidebar("welcome-sidebar");
+        }
     }
 </script>

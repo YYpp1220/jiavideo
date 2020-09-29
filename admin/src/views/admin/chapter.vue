@@ -974,6 +974,13 @@
 
 <script>
     export default {
-        name: "chapter"
+        name: "chapter",
+        methods: {
+
+        },
+        mounted: function() {
+            //sidebar激活样式方法一
+            //this.$parent.activeSidebar("business-chapter-sidebar");
+        }
     }
 </script>
