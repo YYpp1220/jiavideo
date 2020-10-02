@@ -93,9 +93,13 @@
         methods: {
             chapterList(){
                 let _this = this;
-                _this.$http.get("http://localhost:10010/business/admin/chapter/queryAll").then((response) => {
+                _this.$http.post("http://localhost:10010/business/admin/chapter/queryAll",
+                    {
+                        page: 1,
+                        pageSize: 10,
+                    }).then((response) => {
                     console.log(response);
-                    _this.chapterLists = response.data;
+                    _this.chapterLists = response.data["generalClass"];
                 })
             }
         },
