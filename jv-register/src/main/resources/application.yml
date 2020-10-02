@@ -15,4 +15,3 @@ eureka:
 logging:
   level:
     com.jiavideo: debug
-    org.springframework: debug

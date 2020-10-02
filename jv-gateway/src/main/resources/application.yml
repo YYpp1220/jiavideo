@@ -6,15 +6,41 @@ spring:
     name: jv-gayeway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8080"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 360000
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
+              - HEAD
       # 路由转发
       routes:
-      # 对应模块所在名称
-      - id: jv-system
-        # 对应模块url
-        uri: http://127.0.0.1:8086
-        predicates:
+        # 对应模块所在名称
+        - id: jv-system
+          # 对应模块url
+          uri: http://127.0.0.1:8086
+          predicates:
           # 转发所添加的路径
-          - Path=/system/**
+            - Path=/system/**
+         # filters:
+          # 表示过滤1个路径，2表示两个路径，以此类推
+           # - StripPrefix=1
+        # 对应模块所在名称
+        - id: jv-business
+          # 对应模块url
+          uri: lb://jv-business
+          predicates:
+            # 转发所添加的路径
+            - Path=/business/admin/chapter/**
 
 eureka:
   client:
@@ -27,4 +53,3 @@ eureka:
 logging:
   level:
     com.jiavideo.gateway: debug
-    org.springframework: debug
