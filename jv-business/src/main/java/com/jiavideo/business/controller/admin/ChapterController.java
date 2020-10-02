@@ -27,9 +27,9 @@ public class ChapterController {
      *
      * @return {@link ResponseEntity<List<ChapterDTO>>}
      */
-    @PostMapping("/queryAll")
-    public ResponseEntity<PageResult<ChapterDTO>> queryAll(@RequestParam(defaultValue = "1", required = false) Integer page,
-                                                           @RequestParam(defaultValue = "10", required = false) Integer pageSize){
+    @GetMapping("/queryAll")
+    public ResponseEntity<PageResult<ChapterDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         PageResult<ChapterDTO> chapterDTOList = chapterServer.queryAll(page, pageSize);
         return ResponseEntity.ok(chapterDTOList);
     }

@@ -1,5 +1,13 @@
 <template>
-    <table id="simple-table" class="table  table-bordered table-hover">
+    <div>
+        <p>
+            <button @click="chapterList(1)" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-refresh red2"></i>
+                刷新
+        </button>
+        </p>
+        <pagination ref="pagination" v-bind:list="chapterList"></pagination>
+        <table id="simple-table" class="table  table-bordered table-hover">
         <thead>
         <tr>
             <th>ID</th>
@@ -71,10 +79,14 @@
         </tr>
         </tbody>
     </table>
+    </div>
 </template>
 
 <script>
+    import Pagination from "../../components/pagination.vue"
     export default {
+        components: {Pagination},
+
         name: "chapter",
 
         data : function () {
@@ -85,21 +97,25 @@
 
         mounted: function() {
             let _this = this;
-            _this.chapterList();
+            _this.$refs.pagination.size = 10;
+            _this.chapterList(1);
             //sidebar激活样式方法一
             //this.$parent.activeSidebar("business-chapter-sidebar");
         },
 
         methods: {
-            chapterList(){
+            chapterList(page){
                 let _this = this;
-                _this.$http.post("http://localhost:10010/business/admin/chapter/queryAll",
+                _this.$http.get("http://localhost:10010/business/admin/chapter/queryAll/",
                     {
-                        page: 1,
-                        pageSize: 10,
+                        params: {
+                            page: page,
+                            pageSize: _this.$refs.pagination.size,
+                        }
                     }).then((response) => {
                     console.log(response);
                     _this.chapterLists = response.data["generalClass"];
+                    _this.$refs.pagination.render(page, response.data.total)
                 })
             }
         },
