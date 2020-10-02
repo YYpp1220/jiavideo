@@ -8,10 +8,13 @@ import com.jiavideo.business.entity.Chapter;
 import com.jiavideo.business.entity.ChapterExample;
 import com.jiavideo.business.mapper.ChapterMapper;
 import com.jiavideo.common.pojo.PageResult;
+import com.jiavideo.common.utils.UUIDUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,5 +45,15 @@ public class ChapterServer {
         PageInfo<Chapter> chapterPageInfo = new PageInfo<>(chapterList);
         PageResult<ChapterDTO> chapterDTOPageResult = new PageResult<>(chapterPageInfo.getTotal(), chapterPageInfo.getPages(), chapterDTOList);
         return chapterDTOPageResult;
+    }
+
+    /**
+     * 保存
+     * @param chapterDTO 章dto
+     */
+    public void save(ChapterDTO chapterDTO){
+        chapterDTO.setId(UUIDUtil.getShortUuid());
+        Chapter chapter = JSONUtil.toBean(JSONUtil.toJsonStr(chapterDTO), Chapter.class);
+        chapterMapper.insert(chapter);
     }
 }

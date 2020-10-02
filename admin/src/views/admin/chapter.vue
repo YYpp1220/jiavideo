@@ -1,10 +1,15 @@
 <template>
     <div>
         <p>
+            <button @click="add()" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-edit red2"></i>
+                新增
+            </button>
+            &nbsp;
             <button @click="chapterList(1)" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-refresh red2"></i>
                 刷新
-        </button>
+            </button>
         </p>
         <pagination ref="pagination" v-bind:list="chapterList"></pagination>
         <table id="simple-table" class="table  table-bordered table-hover">
@@ -79,6 +84,36 @@
         </tr>
         </tbody>
     </table>
+        <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">表单</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="videoName" class="col-sm-2 control-label">视频名称</label>
+                                <div class="col-sm-10">
+                                    <input v-model="chapter.name" type="text" class="form-control" id="videoName" placeholder="请输入视频名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="videoId" class="col-sm-2 control-label">视频Id</label>
+                                <div class="col-sm-10">
+                                    <input v-model="chapter.courseId" type="text" class="form-control" id="videoId" placeholder="请输入视频所属Id">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button @click="save()" type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </div>
 </template>
 
@@ -91,6 +126,7 @@
 
         data : function () {
             return {
+                chapter: {},
                 chapterLists: [],
             };
         },
@@ -104,6 +140,10 @@
         },
 
         methods: {
+            add(){
+                let _this = this;
+                $("#form-modal").modal("show");
+            },
             chapterList(page){
                 let _this = this;
                 _this.$http.get("http://localhost:10010/business/admin/chapter/queryAll/",
@@ -117,7 +157,19 @@
                     _this.chapterLists = response.data["generalClass"];
                     _this.$refs.pagination.render(page, response.data.total)
                 })
-            }
+            },
+            save(){
+                let _this = this;
+                //let chapterStr = JSON.stringify(_this.chapter);
+                _this.$http.post("http://localhost:10010/business/admin/chapter/save", _this.chapter)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.statusText){
+                            $("#form-modal").modal("hide");
+                            _this.chapterList(1);
+                        }
+                    })
+            },
         },
     }
 </script>
