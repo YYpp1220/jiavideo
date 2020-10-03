@@ -144,6 +144,7 @@
             },
             chapterList(page){
                 let _this = this;
+                Loading.show();
                 _this.$http.get("http://localhost:10010/business/admin/chapter/queryAll/",
                     {
                         params: {
@@ -151,6 +152,7 @@
                             pageSize: _this.$refs.pagination.size,
                         }
                     }).then((response) => {
+                        Loading.hide();
                     console.log(response);
                     _this.chapterLists = response.data["generalClass"];
                     _this.$refs.pagination.render(page, response.data.total)
@@ -158,25 +160,55 @@
             },
             save(){
                 let _this = this;
+                Loading.show();
                 //let chapterStr = JSON.stringify(_this.chapter);
                 _this.$http.post("http://localhost:10010/business/admin/chapter/save", _this.chapter)
                     .then((response) => {
+                        Loading.hide();
                         console.log(response);
                         if (response.statusText === "Created"){
                             $("#form-modal").modal("hide");
                             _this.chapterList(1);
+                            Toast.success("保存成功！")
                         }
                     })
             },
             del(chapterId){
                 let _this = this;
-                _this.$http.delete("http://localhost:10010/business/admin/chapter/delete/" + chapterId)
-                    .then((response) => {
-                        console.log(response);
-                        if (response.statusText === "No Content"){
-                            _this.chapterList(1);
-                        }
-                    })
+                Confirm.show("删除后不可恢复!确认删除？", function(){
+                    Loading.show();
+                    _this.$http.delete("http://localhost:10010/business/admin/chapter/delete/" + chapterId)
+                        .then((response) => {
+                            Loading.hide();
+                            console.log(response);
+                            if (response.statusText === "No Content"){
+                                _this.chapterList(1);
+                                Toast.success("删除成功！")
+                            }
+                        });
+                });
+                /*Swal.fire({
+                    title: '确认删除吗?',
+                    text: "删除后不可恢复!确认删除？",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '确认!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Loading.show();
+                        _this.$http.delete("http://localhost:10010/business/admin/chapter/delete/" + chapterId)
+                            .then((response) => {
+                                Loading.hide();
+                                console.log(response);
+                                if (response.statusText === "No Content"){
+                                    _this.chapterList(1);
+                                    Toast.success("删除成功！")
+                                }
+                            });
+                    }
+                });*/
             },
         },
     }
