@@ -45,4 +45,16 @@ public class ChapterController {
         chapterServer.save(chapterDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    /**
+     * 删除通过id
+     *
+     * @param chapterId 章id
+     * @return {@link ResponseEntity<Void>}
+     */
+    @DeleteMapping("/delete/{chapterId}")
+    public ResponseEntity<Void> deleteById(@PathVariable String chapterId){
+        chapterServer.deleteById(chapterId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

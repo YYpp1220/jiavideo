@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -52,8 +53,39 @@ public class ChapterServer {
      * @param chapterDTO 章dto
      */
     public void save(ChapterDTO chapterDTO){
-        chapterDTO.setId(UUIDUtil.getShortUuid());
         Chapter chapter = JSONUtil.toBean(JSONUtil.toJsonStr(chapterDTO), Chapter.class);
+        if (StringUtils.isEmpty(chapterDTO.getId())) {
+            this.insert(chapter);
+        }else {
+            this.update(chapter);
+        }
+    }
+
+    /**
+     * 更新
+     *
+     * @param chapter 章
+     */
+    private void update(Chapter chapter) {
+        chapterMapper.updateByPrimaryKey(chapter);
+    }
+
+    /**
+     * 插入
+     *
+     * @param chapter 章
+     */
+    private void insert(Chapter chapter){
+        chapter.setId(UUIDUtil.getShortUuid());
         chapterMapper.insert(chapter);
+    }
+
+    /**
+     * 删除通过id
+     *
+     * @param chapterId 章id
+     */
+    public void deleteById(String chapterId) {
+        chapterMapper.deleteByPrimaryKey(chapterId);
     }
 }
