@@ -1,52 +1,26 @@
 package com.jiavideo.business.dto;
 
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * 章
  *
  * @author MyMrDiao
  * @date 2020/09/28
  */
+@Data
 public class ChapterDTO {
     private String id;
 
+    @NotNull(message = "视频Id不能为空")
+    @Length(max = 8, min = 1, message = "视频Id长度为一到八个字符之间")
     private String courseId;
 
+    @NotNull(message = "视频名称不能为空")
+    @Length(max = 15, message = "视频名称不能超过15个字符")
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9\\*]*$", message = "用户昵称限制：最多20字符，包含文字、字母和数字")
     private String name;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
-
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId == null ? null : courseId.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", courseId=").append(courseId);
-        sb.append(", name=").append(name);
-        sb.append("]");
-        return sb.toString();
-    }
 }
