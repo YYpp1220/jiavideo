@@ -12,6 +12,7 @@
         <module>jv-common</module>
         <module>jv-api</module>
         <module>jv-business</module>
+        <module>jv-generator</module>
     </modules>
     <!-- 配置父级 (版本锁定、插件锁定) -->
 	<parent>
