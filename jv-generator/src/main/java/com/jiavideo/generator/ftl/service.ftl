@@ -1,4 +1,4 @@
-package com.jiavideo.business.server;
+package com.jiavideo.${moduleName}.server;
 
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;

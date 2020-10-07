@@ -1,4 +1,4 @@
-package com.jiavideo.business.controller.admin;
+package com.jiavideo.${moduleName}.controller.admin;
 
 import cn.hutool.json.JSONUtil;
 import com.jiavideo.business.dto.${Entity}DTO;
@@ -31,7 +31,7 @@ public class ${Entity}Controller {
     @Autowired
     private ${Entity}Server ${entity}Server;
 
-    public static final String BUSINESS_NAME = "视频名称";
+    public static final String BUSINESS_NAME = "${tableName}";
 
     /**
      * 查询所有

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 章控制器
+ * 部分控制器
  *
  * @author MyMrDiao
  * @date 2020/09/28

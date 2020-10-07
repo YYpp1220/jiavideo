@@ -1,11 +1,19 @@
 package com.jiavideo.generator.server;
 
+import com.jiavideo.common.pojo.Field;
+import com.jiavideo.common.utils.DdUtil;
 import com.jiavideo.generator.utils.FreemarkerUtil;
 import freemarker.template.TemplateException;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 代码生成服务器
@@ -14,15 +22,46 @@ import java.util.Map;
  * @date 2020/10/07
  */
 public class GeneratorServer {
-    private static final String TO_SERVER_PATH = "jv-business\\src\\main\\java\\com\\jiavideo\\business\\server\\";
-    private static final String TO_CONTROLLER_PATH = "jv-business\\src\\main\\java\\com\\jiavideo\\business\\controller\\admin\\";
+    private static final String PREFIX_MODULE = "jv-";
+    private static final String MODULE = "business";
+    private static final String TO_DTO_PATH = "jv-pojo\\jv-business-pojo\\src\\main\\java\\com\\jiavideo\\business\\dto\\";
+    private static final String TO_SERVER_PATH = PREFIX_MODULE + MODULE +"\\src\\main\\java\\com\\jiavideo\\" + MODULE + "\\server\\";
+    private static final String TO_CONTROLLER_PATH = PREFIX_MODULE + MODULE + "\\src\\main\\java\\com\\jiavideo\\" + MODULE + "\\controller\\admin\\";
+    private static final String TO_GENERATOR_PATH = "jv-business\\src\\main\\resources\\generator\\generatorConfig.xml";
 
-    public static void main(String[] args) throws IOException, TemplateException {
-        String Entity = "Section";
-        String entity = "section";
+    public static void main(String[] args) throws Exception {
+        //只生成配置文件中的第一个table节点
+        File file = new File(TO_GENERATOR_PATH);
+        SAXReader reader = new SAXReader();
+        //读取xml文件到Document中
+        Document doc = reader.read(file);
+        //获取xml文件的根节点
+        Element rootElement = doc.getRootElement();
+        //读取context节点
+        Element contextElement = rootElement.element("context");
+        //定义一个Element用于遍历
+        Element tableElement;
+        //读取第一个table的节点
+        tableElement = contextElement.elementIterator("table").next();
+        String Entity = tableElement.attributeValue("domainObjectName");
+        String tableName = tableElement.attributeValue("tableName");
+        String tableNameCn = DdUtil.getTableComment(tableName);
+        String entity = Entity.substring(0, 1).toLowerCase() + Entity.substring(1);
+        System.out.println("表：" + tableElement.attributeValue("tableName"));
+        System.out.println("Entity：" + tableElement.attributeValue("domainObjectName"));
+        List<Field> fieldList = DdUtil.getColumnByTableName(tableName);
+        Set<String> typeSet = DdUtil.getJavaTypes(fieldList);
         Map<String, Object> map = new HashMap<>(16);
         map.put("Entity", Entity);
         map.put("entity", entity);
+        map.put("tableName", tableNameCn);
+        map.put("moduleName", MODULE);
+        map.put("fieldList", fieldList);
+        map.put("typeSet", typeSet);
+
+        //生成dto
+        FreemarkerUtil.initConfig("dto.ftl");
+        FreemarkerUtil.generate(TO_DTO_PATH + Entity + "DTO.java", map);
 
         //生成service
         FreemarkerUtil.initConfig("service.ftl");
