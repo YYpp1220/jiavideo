@@ -6,35 +6,35 @@
                 新增
             </button>
             &nbsp;
-            <button @click="chapterList(1)" class="btn btn-white btn-default btn-round">
+            <button @click="${entity}List(1)" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-refresh red2"></i>
                 刷新
             </button>
         </p>
-        <pagination ref="pagination" v-bind:list="chapterList"></pagination>
+        <pagination ref="pagination" v-bind:list="${entity}List"></pagination>
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>视频名称</th>
-                <th>视频Id</th>
+                <#list fieldList as field>
+                    <th>${field.nameCn}</th>
+                </#list>
                 <th>操作</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr v-for="chapter in chapterLists">
-                <td>{{chapter.id}}</td>
-                <td>{{chapter.name}}</td>
-                <td>{{chapter.courseId}}</td>
+            <tr v-for="${entity} in ${entity}Lists">
+                <#list fieldList as field>
+                    <td>{{${entity}.${field.nameHump}}}</td>
+                </#list>
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
-                        <button @click="edit(chapter)" class="btn btn-xs btn-info">
+                        <button @click="edit(${entity})" class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                         </button>
 
-                        <button @click="del(chapter.id)" class="btn btn-xs btn-danger">
+                        <button @click="del(${entity}.id)" class="btn btn-xs btn-danger">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                         </button>
                     </div>
@@ -87,20 +87,15 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="videoName" class="col-sm-2 control-label">视频名称</label>
-                                <div class="col-sm-10">
-                                    <input v-model="chapter.name" type="text" class="form-control" id="videoName"
-                                           placeholder="请输入视频名称">
+                            <#list fieldList as field>
+                                <div class="form-group">
+                                    <label for="${field.nameHump}" class="col-sm-2 control-label">${field.nameCn}</label>
+                                    <div class="col-sm-10">
+                                        <input v-model="${entity}.${field.nameHump}" type="text" class="form-control" id="${field.nameHump}"
+                                               placeholder="请输入${field.nameCn}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="videoId" class="col-sm-2 control-label">视频Id</label>
-                                <div class="col-sm-10">
-                                    <input v-model="chapter.courseId" type="text" class="form-control" id="videoId"
-                                           placeholder="请输入视频所属Id">
-                                </div>
-                            </div>
+                            </#list>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -119,38 +114,38 @@
     export default {
         components: {Pagination},
 
-        name: "chapter",
+        name: "${entity}",
 
         data: function () {
             return {
-                chapter: {},
-                chapterLists: [],
+                ${entity}: {},
+                ${entity}Lists: [],
             };
         },
 
         mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 10;
-            _this.chapterList(1);
+            _this.${entity}List(1);
             //sidebar激活样式方法一
-            //this.$parent.activeSidebar("business-chapter-sidebar");
+            //this.$parent.activeSidebar("${moduleName}-${entity}-sidebar");
         },
 
         methods: {
             add() {
                 let _this = this;
-                _this.chapter = {};
+                _this.${entity} = {};
                 $("#form-modal").modal("show");
             },
-            edit(chapter) {
+            edit(${entity}) {
                 let _this = this;
-                _this.chapter = $.extend({}, chapter);
+                _this.${entity} = $.extend({}, ${entity});
                 $("#form-modal").modal("show");
             },
-            chapterList(page) {
+            ${entity}List(page) {
                 let _this = this;
                 Loading.show();
-                _this.$http.get(process.env.VUE_APP_SERVER + "/business/admin/chapter/queryAll/",
+                _this.$http.get(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/queryAll/",
                     {
                         params: {
                             page: page,
@@ -158,26 +153,22 @@
                         }
                     }).then((response) => {
                     Loading.hide();
-                    _this.chapterLists = response.data["generalClass"];
+                    _this.${entity}Lists = response.data["generalClass"];
                     _this.$refs.pagination.render(page, response.data.total)
                 })
             },
             save() {
                 let _this = this;
                 //保存校验
-                if (!Validator.require(_this.chapter.name, "名称")
-                    || !Validator.require(_this.chapter.courseId, "课程Id")
-                    || !Validator.length(_this.chapter.courseId, "课程Id", 1, 8)){
-                    return
-                }
+
                 Loading.show();
-                //let chapterStr = JSON.stringify(_this.chapter);
-                _this.$http.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save", _this.chapter)
+                //let ${entity}Str = JSON.stringify(_this.${entity});
+                _this.$http.post(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/save", _this.${entity})
                     .then((response) => {
                         Loading.hide();
                         if (response.statusText === "Created") {
                             $("#form-modal").modal("hide");
-                            _this.chapterList(1);
+                            _this.${entity}List(1);
                             Toast.success("保存成功！")
                         } else if (response.statusText === "Multi-Status") {
                             let paramError = response.data;
@@ -185,41 +176,19 @@
                         }
                     })
             },
-            del(chapterId) {
+            del(${entity}Id) {
                 let _this = this;
                 Confirm.show("删除后不可恢复!确认删除？", function () {
                     Loading.show();
-                    _this.$http.delete(process.env.VUE_APP_SERVER + "/business/admin/chapter/delete/" + chapterId)
+                    _this.$http.delete(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/delete/" + ${entity}Id)
                         .then((response) => {
                             Loading.hide();
                             if (response.statusText === "No Content") {
-                                _this.chapterList(1);
+                                _this.${entity}List(1);
                                 Toast.success("删除成功！")
                             }
                         });
                 });
-                /*Swal.fire({
-                    title: '确认删除吗?',
-                    text: "删除后不可恢复!确认删除？",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '确认!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Loading.show();
-                        _this.$http.delete("http://localhost:10010/business/admin/chapter/delete/" + chapterId)
-                            .then((response) => {
-                                Loading.hide();
-                                console.log(response);
-                                if (response.statusText === "No Content"){
-                                    _this.chapterList(1);
-                                    Toast.success("删除成功！")
-                                }
-                            });
-                    }
-                });*/
             },
         },
     }

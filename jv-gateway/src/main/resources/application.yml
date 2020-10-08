@@ -40,7 +40,7 @@ spring:
           uri: lb://jv-business
           predicates:
             # 转发所添加的路径
-            - Path=/business/admin/chapter/**
+            - Path=/business/**
 
 eureka:
   client:
