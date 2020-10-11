@@ -38,7 +38,7 @@
                     <td>{{section.chapterId}}</td>
                     <td>{{section.video}}</td>
                     <td>{{section.time}}</td>
-                    <td>{{section.charge}}</td>
+                    <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
                     <td>{{section.sort}}</td>
                     <td>{{section.createdAt}}</td>
                     <td>{{section.updatedAt}}</td>
@@ -141,8 +141,9 @@
                                 <div class="form-group">
                                     <label for="charge" class="col-sm-2 control-label">收费</label>
                                     <div class="col-sm-10">
-                                        <input v-model="section.charge" type="text" class="form-control" id="charge"
-                                               placeholder="请输入收费">
+                                        <select v-model="section.charge" type="text" class="form-control" id="charge">
+                                            <option v-for="o in SECTION_CHARGE" v-bind:value="o.key">{{o.value}}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -177,12 +178,13 @@
     export default {
         components: {Pagination},
 
-        name: "section",
+        name: "business-section",
 
         data: function () {
             return {
                 section: {},
                 sectionLists: [],
+                SECTION_CHARGE: SECTION_CHARGE,
             };
         },
 

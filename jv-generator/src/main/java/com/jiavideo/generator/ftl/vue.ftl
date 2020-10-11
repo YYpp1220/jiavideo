@@ -120,7 +120,7 @@
     export default {
         components: {Pagination},
 
-        name: "${entity}",
+        name: "${moduleName}-${entity}",
 
         data: function () {
             return {
