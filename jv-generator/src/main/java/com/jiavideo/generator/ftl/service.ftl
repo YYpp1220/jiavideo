@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
+<#list typeSet as type>
+    <#if type == 'Date'>
+import java.util.Date;
+    </#if>
+</#list>
 
 /**
  * 章服务器
@@ -41,6 +46,11 @@ public class ${Entity}Server {
     public PageResult<${Entity}DTO> queryAll(Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         ${Entity}Example example = new ${Entity}Example();
+        <#list fieldList as field>
+            <#if field.nameHump == 'sort'>
+        example.setOrderByClause("sort asc");
+            </#if>
+        </#list>
         List<${Entity}> ${entity}List = ${entity}Mapper.selectByExample(example);
         List<${Entity}DTO> ${entity}DTOList = ${entity}List.stream().map(${entity} -> JSONUtil.toBean(JSONUtil.toJsonStr(${entity}), ${Entity}DTO.class)).collect(Collectors.toList());
         PageInfo<${Entity}> ${entity}PageInfo = new PageInfo<>(${entity}List);
@@ -67,6 +77,11 @@ public class ${Entity}Server {
      * @param ${entity} 章
      */
     private void update(${Entity} ${entity}) {
+        <#list fieldList as field>
+            <#if field.nameHump == 'updatedAt'>
+        ${entity}.setUpdatedAt(new Date());
+            </#if>
+        </#list>
         ${entity}Mapper.updateByPrimaryKey(${entity});
     }
 
@@ -76,6 +91,14 @@ public class ${Entity}Server {
      * @param ${entity} 章
      */
     private void insert(${Entity} ${entity}){
+        <#list fieldList as field>
+            <#if field.nameHump == 'createdAt'>
+        ${entity}.setCreatedAt(new Date());
+            </#if>
+            <#if field.nameHump == 'updatedAt'>
+        ${entity}.setUpdatedAt(new Date());
+            </#if>
+        </#list>
         ${entity}.setId(UUIDUtil.getShortUuid());
         ${entity}Mapper.insert(${entity});
     }

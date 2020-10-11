@@ -73,7 +73,7 @@ public class DdUtil {
                 String type = rs.getString("Type");
                 String comment = rs.getString("Comment");
                 //YES NO
-                //String nullAble = rs.getString("Null");
+                String nullAble = rs.getString("Null");
                 Field field = new Field();
                 field.setName(columnName);
                 field.setNameHump(lineToHump(columnName));
@@ -85,6 +85,13 @@ public class DdUtil {
                     field.setNameCn(comment.substring(0, comment.indexOf("|")));
                 } else {
                     field.setNameCn(comment);
+                }
+                field.setNullAble("YES".equals(nullAble));
+                if (type.toUpperCase().contains("varchar".toUpperCase())) {
+                    String lengthStr = type.substring(type.indexOf("(") + 1, type.length() - 1);
+                    field.setLength(Integer.valueOf(lengthStr));
+                } else {
+                    field.setLength(0);
                 }
                 fieldList.add(field);
             }

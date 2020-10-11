@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Date;
 
 /**
- * 部分服务
+ * 章服务器
  *
  * @author MyMrDiao
  * @date 2020/09/28
@@ -41,6 +42,7 @@ public class SectionServer {
     public PageResult<SectionDTO> queryAll(Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         SectionExample example = new SectionExample();
+        example.setOrderByClause("sort asc");
         List<Section> sectionList = sectionMapper.selectByExample(example);
         List<SectionDTO> sectionDTOList = sectionList.stream().map(section -> JSONUtil.toBean(JSONUtil.toJsonStr(section), SectionDTO.class)).collect(Collectors.toList());
         PageInfo<Section> sectionPageInfo = new PageInfo<>(sectionList);
@@ -67,6 +69,7 @@ public class SectionServer {
      * @param section 章
      */
     private void update(Section section) {
+        section.setUpdatedAt(new Date());
         sectionMapper.updateByPrimaryKey(section);
     }
 
@@ -76,6 +79,8 @@ public class SectionServer {
      * @param section 章
      */
     private void insert(Section section){
+        section.setCreatedAt(new Date());
+        section.setUpdatedAt(new Date());
         section.setId(UUIDUtil.getShortUuid());
         sectionMapper.insert(section);
     }

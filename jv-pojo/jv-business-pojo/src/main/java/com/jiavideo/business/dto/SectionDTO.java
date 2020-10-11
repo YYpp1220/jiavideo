@@ -3,6 +3,9 @@ package com.jiavideo.business.dto;
 import lombok.Data;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 部分dto
@@ -21,6 +24,8 @@ public class SectionDTO {
     /**
      * 标题
      */
+    @NotNull(message = "标题不能为空")
+    @Length(max = 50, message = "标题最多50个字符")
     private String title;
 
     /**
@@ -36,6 +41,8 @@ public class SectionDTO {
     /**
      * 视频
      */
+    @NotNull(message = "视频不能为空")
+    @Length(max =200, message = "视频最多200个字符")
     private String video;
 
     /**

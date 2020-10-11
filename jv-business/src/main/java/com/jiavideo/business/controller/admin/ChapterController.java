@@ -53,12 +53,7 @@ public class ChapterController {
      */
     @PostMapping("/save")
     public ResponseEntity<Object> saveBusiness(@RequestBody @Valid ChapterDTO chapterDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            List<String> errorStrArr = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .collect(Collectors.toList());
-            log.error(errorStrArr.get(0));
+        if (JvException.paramVerificationEx(result)) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
         }
         chapterServer.save(chapterDTO);

@@ -53,6 +53,9 @@ public class SectionController {
      */
     @PostMapping("/save")
     public ResponseEntity<Object> saveBusiness(@RequestBody @Valid SectionDTO sectionDTO, BindingResult result) {
+        if (JvException.paramVerificationEx(result)) {
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
+        }
         sectionServer.save(sectionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

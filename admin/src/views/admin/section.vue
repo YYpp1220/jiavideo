@@ -104,13 +104,6 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label for="id" class="col-sm-2 control-label">id</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.id" type="text" class="form-control" id="id"
-                                               placeholder="请输入id">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="title" class="col-sm-2 control-label">标题</label>
                                     <div class="col-sm-10">
                                         <input v-model="section.title" type="text" class="form-control" id="title"
@@ -157,20 +150,6 @@
                                     <div class="col-sm-10">
                                         <input v-model="section.sort" type="text" class="form-control" id="sort"
                                                placeholder="请输入顺序">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="createdAt" class="col-sm-2 control-label">创建时间</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.createdAt" type="text" class="form-control" id="createdAt"
-                                               placeholder="请输入创建时间">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="updatedAt" class="col-sm-2 control-label">修改时间</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.updatedAt" type="text" class="form-control" id="updatedAt"
-                                               placeholder="请输入修改时间">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -244,7 +223,13 @@
             save() {
                 let _this = this;
                 //保存校验
-
+                if (!Validator.require(_this.section.title, "标题")
+                    || !Validator.require(_this.section.video, "视频")
+                    || !Validator.length(_this.section.title, "标题", 1, "50")
+                    || !Validator.length(_this.section.video, "视频", 1, "200")
+                ) {
+                    return;
+                }
                 Loading.show();
                 //let sectionStr = JSON.stringify(_this.section);
                 _this.$http.post(process.env.VUE_APP_SERVER + "/business/admin/section/save", _this.section)

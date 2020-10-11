@@ -53,6 +53,9 @@ public class ${Entity}Controller {
      */
     @PostMapping("/save")
     public ResponseEntity<Object> saveBusiness(@RequestBody @Valid ${Entity}DTO ${entity}DTO, BindingResult result) {
+        if (JvException.paramVerificationEx(result)) {
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
+        }
         ${entity}Server.save(${entity}DTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

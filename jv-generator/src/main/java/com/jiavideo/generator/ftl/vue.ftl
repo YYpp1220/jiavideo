@@ -16,7 +16,9 @@
             <thead>
             <tr>
                 <#list fieldList as field>
+                    <#--<#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'id'>-->
                     <th>${field.nameCn}</th>
+                    <#--</#if>-->
                 </#list>
                 <th>操作</th>
             </tr>
@@ -25,7 +27,9 @@
             <tbody>
             <tr v-for="${entity} in ${entity}Lists">
                 <#list fieldList as field>
+                   <#-- <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'id'>-->
                     <td>{{${entity}.${field.nameHump}}}</td>
+                    <#--</#if>-->
                 </#list>
 
                 <td>
@@ -88,6 +92,7 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <#list fieldList as field>
+                                <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.name != 'id'>
                                 <div class="form-group">
                                     <label for="${field.nameHump}" class="col-sm-2 control-label">${field.nameCn}</label>
                                     <div class="col-sm-10">
@@ -95,6 +100,7 @@
                                                placeholder="请输入${field.nameCn}">
                                     </div>
                                 </div>
+                                </#if>
                             </#list>
                         </form>
                     </div>
@@ -160,7 +166,20 @@
             save() {
                 let _this = this;
                 //保存校验
-
+                if (1 != 1
+                 <#list fieldList as field>
+                    <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'sort' && field.name != 'id'>
+                        <#if !field.nullAble>
+                    || !Validator.require(_this.${entity}.${field.nameHump}, "${field.nameCn}")
+                        </#if>
+                        <#if (field.length > 0)>
+                    || !Validator.length(_this.${entity}.${field.nameHump}, "${field.nameCn}", 1, "${field.length}")
+                        </#if>
+                    </#if>
+                </#list>
+                ) {
+                    return;
+                }
                 Loading.show();
                 //let ${entity}Str = JSON.stringify(_this.${entity});
                 _this.$http.post(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/save", _this.${entity})
