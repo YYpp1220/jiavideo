@@ -93,4 +93,13 @@ public class CourseServer {
     public void deleteById(String courseId) {
         courseMapper.deleteByPrimaryKey(courseId);
     }
+
+    /**
+     * 更新时间
+     *
+     * @param courseId 进程id
+     */
+    public void updateTime(String courseId) {
+        courseMapper.updateTime(courseId);
+    }
 }

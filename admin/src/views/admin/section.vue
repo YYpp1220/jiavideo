@@ -50,7 +50,7 @@
                     <td>{{section.id}}</td>
                     <td>{{section.title}}</td>
                     <td>{{section.video}}</td>
-                    <td>{{section.time}}</td>
+                    <td>{{section.time | formatSecond}}</td>
                     <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
                     <td>{{section.sort}}</td>
                     <td>{{section.createdAt}}</td>
@@ -59,12 +59,12 @@
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
-                        <button @click="edit(section)" class="btn btn-xs btn-info">
-                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                        <button @click="edit(section)" class="btn btn-white btn-xs btn-info btn-round">
+                            编辑
                         </button>
 
-                        <button @click="del(section.id)" class="btn btn-xs btn-danger">
-                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        <button @click="del(section.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                            删除
                         </button>
                     </div>
 
@@ -254,6 +254,8 @@
                 ) {
                     return;
                 }
+                _this.section.courseId = _this.course.id;
+                _this.section.chapterId = _this.chapter.id;
                 Loading.show();
                 //let sectionStr = JSON.stringify(_this.section);
                 _this.$http.post(process.env.VUE_APP_SERVER + "/business/admin/section/save", _this.section)

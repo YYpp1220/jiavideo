@@ -33,6 +33,9 @@ public class SectionServer {
     @Autowired(required = false)
     private SectionMapper sectionMapper;
 
+    @Autowired
+    private CourseServer courseServer;
+
     /**
      * 查询所有
      *
@@ -70,6 +73,7 @@ public class SectionServer {
         }else {
             this.update(section);
         }
+        courseServer.updateTime(sectionDTO.getCourseId());
     }
 
     /**
