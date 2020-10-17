@@ -17,7 +17,7 @@
             <tr>
                 <#list fieldList as field>
                     <#--<#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'id'>-->
-                    <th>${field.nameCn}</th>
+                <th>${field.nameCn}</th>
                     <#--</#if>-->
                 </#list>
                 <th>操作</th>
@@ -28,7 +28,11 @@
             <tr v-for="${entity} in ${entity}Lists">
                 <#list fieldList as field>
                    <#-- <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.nameHump != 'id'>-->
-                    <td>{{${entity}.${field.nameHump}}}</td>
+                    <#if field.enums>
+                <td>{{${field.enumsConst} | optionKV(${entity}.${field.nameHump})}}</td>
+                    <#else>
+                <td>{{${entity}.${field.nameHump}}}</td>
+                    </#if>
                     <#--</#if>-->
                 </#list>
 
@@ -93,6 +97,16 @@
                         <form class="form-horizontal">
                             <#list fieldList as field>
                                 <#if field.nameHump != 'createdAt' && field.nameHump != 'updatedAt' && field.name != 'id'>
+                                    <#if field.enums>
+                                <div class="form-group">
+                                    <label for="${field.nameHump}" class="col-sm-2 control-label">${field.nameCn}</label>
+                                    <div class="col-sm-10">
+                                        <select v-model="${entity}.${field.nameHump}" type="text" class="form-control" id="${field.nameHump}">
+                                            <option v-for="o in ${field.enumsConst}" v-bind:value="o.key">{{o.value}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                    <#else>
                                 <div class="form-group">
                                     <label for="${field.nameHump}" class="col-sm-2 control-label">${field.nameCn}</label>
                                     <div class="col-sm-10">
@@ -100,6 +114,7 @@
                                                placeholder="请输入${field.nameCn}">
                                     </div>
                                 </div>
+                                    </#if>
                                 </#if>
                             </#list>
                         </form>
@@ -126,6 +141,11 @@
             return {
                 ${entity}: {},
                 ${entity}Lists: [],
+                <#list fieldList as field>
+                    <#if field.enums>
+                ${field.enumsConst}: ${field.enumsConst},
+                    </#if>
+                </#list>
             };
         },
 
@@ -173,7 +193,7 @@
                     || !Validator.require(_this.${entity}.${field.nameHump}, "${field.nameCn}")
                         </#if>
                         <#if (field.length > 0)>
-                    || !Validator.length(_this.${entity}.${field.nameHump}, "${field.nameCn}", 1, "${field.length}")
+                    || !Validator.length(_this.${entity}.${field.nameHump}, "${field.nameCn}", 1, "${field.length?c}")
                         </#if>
                     </#if>
                 </#list>

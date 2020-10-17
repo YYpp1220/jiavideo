@@ -1,7 +1,6 @@
 package com.jiavideo.enums;
 
-import com.jiavideo.common.enumerate.SectionChargeEnum;
-import com.jiavideo.common.enumerate.YesNoEnum;
+import com.jiavideo.common.enumerate.*;
 import com.jiavideo.common.utils.ToEnumUtil;
 
 /**
@@ -20,6 +19,9 @@ public class EnumGenerator {
         try {
             ToEnumUtil.toJson(SectionChargeEnum.class, bufferObject, bufferArray);
             ToEnumUtil.toJson(YesNoEnum.class, bufferObject, bufferArray);
+            ToEnumUtil.toJson(CourseLevelEnum.class, bufferObject, bufferArray);
+            ToEnumUtil.toJson(CourseChargeEnum.class, bufferObject, bufferArray);
+            ToEnumUtil.toJson(CourseStatusEnum.class, bufferObject, bufferArray);
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             ToEnumUtil.writeJs(buffer, ENUM_PATH_JS);
         } catch (Exception e) {

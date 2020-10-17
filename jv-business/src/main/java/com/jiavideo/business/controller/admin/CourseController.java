@@ -1,8 +1,8 @@
 package com.jiavideo.business.controller.admin;
 
 import cn.hutool.json.JSONUtil;
-import com.jiavideo.business.dto.ChapterDTO;
-import com.jiavideo.business.server.ChapterServer;
+import com.jiavideo.business.dto.CourseDTO;
+import com.jiavideo.business.server.CourseServer;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.common.pojo.PageResult;
 import lombok.extern.slf4j.Slf4j;
@@ -19,57 +19,56 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 章控制器
+ * 当然控制器
  *
  * @author MyMrDiao
  * @date 2020/09/28
  */
 @Slf4j
 @RestController
-@RequestMapping("/admin/chapter")
-public class ChapterController {
+@RequestMapping("/admin/course")
+public class CourseController {
     @Autowired
-    private ChapterServer chapterServer;
+    private CourseServer courseServer;
 
-    public static final String BUSINESS_NAME = "视频名称";
+    public static final String BUSINESS_NAME = "课程";
 
     /**
      * 查询所有
      *
-     * @return {@link ResponseEntity<List<ChapterDTO>>}
+     * @return {@link ResponseEntity<List<CourseDTO>>}
      */
     @GetMapping("/queryAll")
-    public ResponseEntity<PageResult<ChapterDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                                           @RequestParam(value = "courseId", required = true) String courseId) {
-        PageResult<ChapterDTO> chapterDTOList = chapterServer.queryAll(page, pageSize, courseId);
-        return ResponseEntity.ok(chapterDTOList);
+    public ResponseEntity<PageResult<CourseDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        PageResult<CourseDTO> courseDTOList = courseServer.queryAll(page, pageSize);
+        return ResponseEntity.ok(courseDTOList);
     }
 
     /**
      * 保存
      *
-     * @param chapterDTO 章dto
+     * @param courseDTO 章dto
      * @return {@link ResponseEntity<Void>}
      */
     @PostMapping("/save")
-    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid ChapterDTO chapterDTO, BindingResult result) {
+    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid CourseDTO courseDTO, BindingResult result) {
         if (JvException.paramVerificationEx(result)) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
         }
-        chapterServer.save(chapterDTO);
+        courseServer.save(courseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 删除通过id
      *
-     * @param chapterId 章id
+     * @param courseId 章id
      * @return {@link ResponseEntity<Void>}
      */
-    @DeleteMapping("/delete/{chapterId}")
-    public ResponseEntity<Void> deleteById(@PathVariable String chapterId) {
-        chapterServer.deleteById(chapterId);
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<Void> deleteById(@PathVariable String courseId) {
+        courseServer.deleteById(courseId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

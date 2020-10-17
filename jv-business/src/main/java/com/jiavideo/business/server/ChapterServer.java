@@ -37,10 +37,15 @@ public class ChapterServer {
      * @return {@link List<ChapterDTO>}
      * @param page
      * @param pageSize
+     * @param courseId
      */
-    public PageResult<ChapterDTO> queryAll(Integer page, Integer pageSize) {
+    public PageResult<ChapterDTO> queryAll(Integer page, Integer pageSize, String courseId) {
         PageHelper.startPage(page, pageSize);
         ChapterExample example = new ChapterExample();
+        ChapterExample.Criteria criteria = example.createCriteria();
+        if (!StringUtils.isEmpty(courseId)) {
+            criteria.andCourseIdEqualTo(courseId);
+        }
         List<Chapter> chapterList = chapterMapper.selectByExample(example);
         List<ChapterDTO> chapterDTOList = chapterList.stream().map(chapter -> JSONUtil.toBean(JSONUtil.toJsonStr(chapter), ChapterDTO.class)).collect(Collectors.toList());
         PageInfo<Chapter> chapterPageInfo = new PageInfo<>(chapterList);

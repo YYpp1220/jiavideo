@@ -85,7 +85,7 @@ public class ToEnumUtil {
      * @param str 需要转换字符串
      * @return 返回结果
      */
-    private static String toUnderline(String str){
+    public static String toUnderline(String str){
         String result = underline(str).toString();
         return result.substring(1, result.length()).toUpperCase().replace("_ENUM", "");
     }

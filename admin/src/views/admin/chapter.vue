@@ -1,6 +1,23 @@
 <template>
     <div>
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <h4 class="lighter">
+                    <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+                    <router-link to="/business/course" class="pink">{{course.name}}</router-link>
+                </h4>
+
+                <div class="hr hr-18 hr-double dotted"></div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
         <p>
+            <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-arrow-left red2"></i>
+                返回课程
+            </router-link>
+
             <button @click="add()" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-edit red2"></i>
                 新增
@@ -17,7 +34,6 @@
             <tr>
                 <th>ID</th>
                 <th>视频名称</th>
-                <th>视频Id</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -26,16 +42,19 @@
             <tr v-for="chapter in chapterLists">
                 <td>{{chapter.id}}</td>
                 <td>{{chapter.name}}</td>
-                <td>{{chapter.courseId}}</td>
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
-                        <button @click="edit(chapter)" class="btn btn-xs btn-info">
-                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                        <button @click="toSection(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+                            小节
                         </button>
 
-                        <button @click="del(chapter.id)" class="btn btn-xs btn-danger">
-                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        <button @click="edit(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+                            编辑
+                        </button>
+
+                        <button @click="del(chapter.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                            删除
                         </button>
                     </div>
 
@@ -95,10 +114,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="videoId" class="col-sm-2 control-label">视频Id</label>
+                                <label class="col-sm-2 control-label">视频Id</label>
                                 <div class="col-sm-10">
-                                    <input v-model="chapter.courseId" type="text" class="form-control" id="videoId"
-                                           placeholder="请输入视频所属Id">
+                                    <p class="form-control-static">{{course.name}}</p>
                                 </div>
                             </div>
                         </form>
@@ -125,12 +143,18 @@
             return {
                 chapter: {},
                 chapterLists: [],
+                course: {},
             };
         },
 
         mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 10;
+            let course = SessionStorage.get("course") || {};
+            if (Tool.isEmpty(course)){
+                _this.$router.push("/welcome");
+            }
+            _this.course = course;
             _this.chapterList(1);
             //sidebar激活样式方法一
             //this.$parent.activeSidebar("business-chapter-sidebar");
@@ -155,6 +179,7 @@
                         params: {
                             page: page,
                             pageSize: _this.$refs.pagination.size,
+                            courseId: _this.course.id,
                         }
                     }).then((response) => {
                     Loading.hide();
@@ -166,10 +191,10 @@
                 let _this = this;
                 //保存校验
                 if (!Validator.require(_this.chapter.name, "名称")
-                    || !Validator.require(_this.chapter.courseId, "课程Id")
                     || !Validator.length(_this.chapter.courseId, "课程Id", 1, 8)){
                     return
                 }
+                _this.chapter.courseId = _this.course.id;
                 Loading.show();
                 //let chapterStr = JSON.stringify(_this.chapter);
                 _this.$http.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save", _this.chapter)
@@ -221,6 +246,11 @@
                     }
                 });*/
             },
+            toSection(chapter) {
+                let _this = this;
+                SessionStorage.set("chapter", chapter);
+                _this.$router.push("/business/section");
+            }
         },
     }
 </script>

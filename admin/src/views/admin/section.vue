@@ -1,5 +1,22 @@
 <template>
     <div>
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <h4 class="lighter">
+                    <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+                    <router-link to="/business/course" class="pink">{{course.name}}</router-link>
+                </h4>
+
+                <h4 class="lighter">
+                    <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+                    <router-link to="/business/chapter" class="pink">{{chapter.name}}</router-link>
+                </h4>
+
+                <div class="hr hr-18 hr-double dotted"></div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
         <p>
             <button @click="add()" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-edit red2"></i>
@@ -17,8 +34,6 @@
             <tr>
                 <th>id</th>
                 <th>标题</th>
-                <th>课程</th>
-                <th>大章</th>
                 <th>视频</th>
                 <th>时长</th>
                 <th>收费</th>
@@ -34,8 +49,6 @@
             <tr v-for="section in sectionLists">
                     <td>{{section.id}}</td>
                     <td>{{section.title}}</td>
-                    <td>{{section.courseId}}</td>
-                    <td>{{section.chapterId}}</td>
                     <td>{{section.video}}</td>
                     <td>{{section.time}}</td>
                     <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
@@ -111,17 +124,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="courseId" class="col-sm-2 control-label">课程</label>
+                                    <label class="col-sm-2 control-label">课程</label>
                                     <div class="col-sm-10">
-                                        <input v-model="section.courseId" type="text" class="form-control" id="courseId"
-                                               placeholder="请输入课程">
+                                        <p class="form-control-static">{{course.name}}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="chapterId" class="col-sm-2 control-label">大章</label>
+                                    <label class="col-sm-2 control-label">大章</label>
                                     <div class="col-sm-10">
-                                        <input v-model="section.chapterId" type="text" class="form-control" id="chapterId"
-                                               placeholder="请输入大章">
+                                        <p class="form-control-static">{{chapter.name}}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -185,12 +196,21 @@
                 section: {},
                 sectionLists: [],
                 SECTION_CHARGE: SECTION_CHARGE,
+                course: {},
+                chapter: {},
             };
         },
 
         mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 10;
+            let chapter = SessionStorage.get("chapter");
+            let course = SessionStorage.get("course");
+            if (Tool.isEmpty(chapter) || Tool.isEmpty(course)) {
+                _this.$router.push("/welcome");
+            }
+            _this.chapter = chapter;
+            _this.course = course;
             _this.sectionList(1);
             //sidebar激活样式方法一
             //this.$parent.activeSidebar("business-section-sidebar");
@@ -215,6 +235,8 @@
                         params: {
                             page: page,
                             pageSize: _this.$refs.pagination.size,
+                            courseId: _this.course.id,
+                            chapterId: _this.chapter.id,
                         }
                     }).then((response) => {
                     Loading.hide();

@@ -35,14 +35,22 @@ public class SectionServer {
 
     /**
      * 查询所有
-     * @return {@link List<SectionDTO>}
-     * @param page
-     * @param pageSize
+     *
+     * @param page      页面
+     * @param pageSize  页面大小
+     * @param courseId  进程id
+     * @param chapterId 章id
+     * @return {@link PageResult<SectionDTO>}
      */
-    public PageResult<SectionDTO> queryAll(Integer page, Integer pageSize) {
+    public PageResult<SectionDTO> queryAll(Integer page, Integer pageSize, String courseId, String chapterId) {
         PageHelper.startPage(page, pageSize);
         SectionExample example = new SectionExample();
         example.setOrderByClause("sort asc");
+        SectionExample.Criteria criteria = example.createCriteria();
+        if (!StringUtils.isEmpty(chapterId) || !StringUtils.isEmpty(courseId)) {
+            criteria.andCourseIdEqualTo(courseId);
+            criteria.andChapterIdEqualTo(chapterId);
+        }
         List<Section> sectionList = sectionMapper.selectByExample(example);
         List<SectionDTO> sectionDTOList = sectionList.stream().map(section -> JSONUtil.toBean(JSONUtil.toJsonStr(section), SectionDTO.class)).collect(Collectors.toList());
         PageInfo<Section> sectionPageInfo = new PageInfo<>(sectionList);
@@ -52,6 +60,7 @@ public class SectionServer {
 
     /**
      * 保存
+     *
      * @param sectionDTO 章dto
      */
     public void save(SectionDTO sectionDTO){

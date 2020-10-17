@@ -40,8 +40,10 @@ public class SectionController {
      */
     @GetMapping("/queryAll")
     public ResponseEntity<PageResult<SectionDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageResult<SectionDTO> sectionDTOList = sectionServer.queryAll(page, pageSize);
+                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                                           @RequestParam(value = "courseId", required = true) String courseId,
+                                                           @RequestParam(value = "chapterId", required = true) String chapterId) {
+        PageResult<SectionDTO> sectionDTOList = sectionServer.queryAll(page, pageSize, courseId, chapterId);
         return ResponseEntity.ok(sectionDTOList);
     }
 
