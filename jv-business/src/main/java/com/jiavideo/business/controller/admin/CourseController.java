@@ -1,7 +1,9 @@
 package com.jiavideo.business.controller.admin;
 
 import cn.hutool.json.JSONUtil;
+import com.jiavideo.business.dto.CourseCategoryDTO;
 import com.jiavideo.business.dto.CourseDTO;
+import com.jiavideo.business.server.CourseCategoryServer;
 import com.jiavideo.business.server.CourseServer;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.common.pojo.PageResult;
@@ -30,6 +32,9 @@ import java.util.stream.Collectors;
 public class CourseController {
     @Autowired
     private CourseServer courseServer;
+
+    @Autowired
+    private CourseCategoryServer courseCategoryServer;
 
     public static final String BUSINESS_NAME = "课程";
 
@@ -70,5 +75,17 @@ public class CourseController {
     public ResponseEntity<Void> deleteById(@PathVariable String courseId) {
         courseServer.deleteById(courseId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    /**
+     * 类别列表
+     *
+     * @param courseId 进程id
+     * @return {@link ResponseEntity<PageResult<CourseCategoryDTO>>}
+     */
+    @PostMapping("/categoryList/{courseId}")
+    public ResponseEntity<PageResult<CourseCategoryDTO>> categoryList(@PathVariable("courseId") String courseId) {
+        PageResult<CourseCategoryDTO> pageResult = courseCategoryServer.listByCourse(courseId);
+        return ResponseEntity.ok(pageResult);
     }
 }

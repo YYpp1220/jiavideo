@@ -33,6 +33,9 @@ public class CourseServer {
     @Autowired(required = false)
     private CourseMapper courseMapper;
 
+    @Autowired
+    private CourseCategoryServer courseCategoryServer;
+
     /**
      * 查询所有
      * @return {@link List<CourseDTO>}
@@ -61,6 +64,9 @@ public class CourseServer {
         }else {
             this.update(course);
         }
+
+        // 批量保存课程分类
+        courseCategoryServer.saveBatch(course.getId(), courseDTO.getCategorys());
     }
 
     /**

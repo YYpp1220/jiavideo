@@ -3,6 +3,8 @@ package com.jiavideo.business.dto;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
@@ -99,4 +101,8 @@ public class CourseDTO {
      */
     private String teacherId;
 
+    /**
+     * 思想史范畴
+     */
+    private List<CategoryDTO> categorys;
 }

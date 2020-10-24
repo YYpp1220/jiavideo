@@ -204,8 +204,8 @@
         mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 10;
-            let chapter = SessionStorage.get("chapter");
-            let course = SessionStorage.get("course");
+            let chapter = SessionStorage.get("chapter") || {};
+            let course = SessionStorage.get("course") || {};
             if (Tool.isEmpty(chapter) || Tool.isEmpty(course)) {
                 _this.$router.push("/welcome");
             }

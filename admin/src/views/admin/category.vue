@@ -165,26 +165,26 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">父分类</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{active.name || "无"}}</p>
-                                    </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">父分类</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">{{active.name || "无"}}</p>
                                 </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">名称</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="category.name" type="text" class="form-control" id="name"
-                                               placeholder="请输入名称">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-10">
+                                    <input v-model="category.name" type="text" class="form-control" id="name"
+                                           placeholder="请输入名称">
                                 </div>
-                                <div class="form-group">
-                                    <label for="sort" class="col-sm-2 control-label">顺序</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="category.sort" type="text" class="form-control" id="sort"
-                                               placeholder="请输入顺序">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sort" class="col-sm-2 control-label">顺序</label>
+                                <div class="col-sm-10">
+                                    <input v-model="category.sort" type="text" class="form-control" id="sort"
+                                           placeholder="请输入顺序">
                                 </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
