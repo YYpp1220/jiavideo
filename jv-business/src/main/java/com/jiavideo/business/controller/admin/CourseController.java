@@ -2,6 +2,7 @@ package com.jiavideo.business.controller.admin;
 
 import cn.hutool.json.JSONUtil;
 import com.jiavideo.business.dto.CourseCategoryDTO;
+import com.jiavideo.business.dto.CourseContentDTO;
 import com.jiavideo.business.dto.CourseDTO;
 import com.jiavideo.business.server.CourseCategoryServer;
 import com.jiavideo.business.server.CourseServer;
@@ -86,6 +87,31 @@ public class CourseController {
     @PostMapping("/categoryList/{courseId}")
     public ResponseEntity<PageResult<CourseCategoryDTO>> categoryList(@PathVariable("courseId") String courseId) {
         PageResult<CourseCategoryDTO> pageResult = courseCategoryServer.listByCourse(courseId);
+        return ResponseEntity.ok(pageResult);
+    }
+
+    /**
+     * 通过id找到内容
+     *
+     * @param id id
+     * @return {@link ResponseEntity<PageResult<CourseContentDTO>>}
+     */
+    @GetMapping("/findContent/{id}")
+    public ResponseEntity<PageResult<CourseContentDTO>> findContentById(@PathVariable("id") String id) {
+        PageResult<CourseContentDTO> content = courseServer.findContentById(id);
+        return ResponseEntity.ok(content);
+    }
+
+    /**
+     * 保存内容
+     *
+     * @param courseContentDTO 课程内容dto
+     * @return {@link ResponseEntity<PageResult>}
+     */
+    @PostMapping("/saveContent")
+    public ResponseEntity<PageResult> saveContent(@RequestBody CourseContentDTO courseContentDTO) {
+        PageResult<Object> pageResult = new PageResult<>();
+        courseServer.saveContent(courseContentDTO);
         return ResponseEntity.ok(pageResult);
     }
 }
