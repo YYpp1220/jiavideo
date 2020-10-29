@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiavideo.business.dto.CourseContentDTO;
 import com.jiavideo.business.dto.CourseDTO;
+import com.jiavideo.business.dto.SortDTO;
 import com.jiavideo.business.entity.Course;
 import com.jiavideo.business.entity.CourseContent;
 import com.jiavideo.business.entity.CourseExample;
@@ -151,5 +152,25 @@ public class CourseServer {
             num = courseContentMapper.insert(content);
         }
         return num;
+    }
+
+    /**
+     * 排序
+     *
+     * @param sortDTO 那种dto
+     */
+    public void sort(SortDTO sortDTO) {
+        // 修改当前记录的排序值
+        courseMapper.updateSort(sortDTO);
+
+        // 如果排序值变大
+        if (sortDTO.getNewSort() > sortDTO.getOldSort()) {
+            courseMapper.moveSortsForward(sortDTO);
+        }
+
+        // 如果排序值变小
+        if (sortDTO.getNewSort() < sortDTO.getOldSort()) {
+            courseMapper.moveSortsBackward(sortDTO);
+        }
     }
 }

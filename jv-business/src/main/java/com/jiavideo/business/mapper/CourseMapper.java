@@ -1,5 +1,6 @@
 package com.jiavideo.business.mapper;
 
+import com.jiavideo.business.dto.SortDTO;
 import com.jiavideo.business.entity.Course;
 import com.jiavideo.business.entity.CourseExample;
 import org.apache.ibatis.annotations.Param;
@@ -76,4 +77,25 @@ public interface CourseMapper {
      * @return int
      */
     int updateTime(@Param("courseId") String courseId);
+
+    /**
+     * 更新排序
+     *
+     * @param sortDTO 那种dto
+     */
+    void updateSort(SortDTO sortDTO);
+
+    /**
+     * 推动各种
+     *
+     * @param sortDTO 那种dto
+     */
+    void moveSortsForward(SortDTO sortDTO);
+
+    /**
+     * 向后移动类型
+     *
+     * @param sortDTO 那种dto
+     */
+    void moveSortsBackward(SortDTO sortDTO);
 }

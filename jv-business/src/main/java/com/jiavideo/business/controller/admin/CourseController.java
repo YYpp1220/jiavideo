@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.jiavideo.business.dto.CourseCategoryDTO;
 import com.jiavideo.business.dto.CourseContentDTO;
 import com.jiavideo.business.dto.CourseDTO;
+import com.jiavideo.business.dto.SortDTO;
 import com.jiavideo.business.server.CourseCategoryServer;
 import com.jiavideo.business.server.CourseServer;
 import com.jiavideo.common.excepton.JvException;
@@ -112,6 +113,19 @@ public class CourseController {
     public ResponseEntity<PageResult> saveContent(@RequestBody CourseContentDTO courseContentDTO) {
         PageResult<Object> pageResult = new PageResult<>();
         courseServer.saveContent(courseContentDTO);
+        return ResponseEntity.ok(pageResult);
+    }
+
+    /**
+     * 排序
+     *
+     * @param sortDTO 那种dto
+     * @return {@link ResponseEntity<PageResult>}
+     */
+    @PostMapping("/sort")
+    public ResponseEntity<PageResult> sort(@RequestBody SortDTO sortDTO) {
+        PageResult<Object> pageResult = new PageResult<>();
+        courseServer.sort(sortDTO);
         return ResponseEntity.ok(pageResult);
     }
 }
