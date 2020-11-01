@@ -62,7 +62,7 @@
                         <button @click="edit(section)" class="btn btn-white btn-xs btn-info btn-round">
                             编辑
                         </button>
-
+                        &nbsp;
                         <button @click="del(section.id)" class="btn btn-white btn-xs btn-warning btn-round">
                             删除
                         </button>

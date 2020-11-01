@@ -28,6 +28,15 @@
                         <h3 class="search-title">
                             <a href="#" class="blue">{{course.name}}</a>
                         </h3>
+                        <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" class="profile-activity clearfix">
+                            <div>
+                                <img v-show="!teacher.image" class="pull-left" src="/static/image/lecturerAvatar/头像1.jpg" />
+                                <img v-show="teacher.image" class="pull-left" v-bind:src="teacher.image" />
+                                <a class="user" href="#"> {{teacher.name}} </a>
+                                <br>
+                                {{teacher.position}}
+                            </div>
+                        </div>
                         <p>
                             <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>
                         </p>
@@ -84,6 +93,14 @@
                                 <div class="col-sm-10">
                                     <input v-model="course.name" type="text" class="form-control" id="name"
                                            placeholder="请输入名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="teacherId" class="col-sm-2 control-label">讲师</label>
+                                <div class="col-sm-10">
+                                    <select v-model="course.teacherId" type="text" class="form-control" id="teacherId">
+                                        <option v-for="o in teachers" v-bind:value="o.id">{{o.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -150,13 +167,6 @@
                                 <div class="col-sm-10">
                                     <input v-model="course.sort" type="text" class="form-control" id="sort"
                                            placeholder="请输入顺序" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="teacherId" class="col-sm-2 control-label">讲师</label>
-                                <div class="col-sm-10">
-                                    <input v-model="course.teacherId" type="text" class="form-control" id="teacherId"
-                                           placeholder="请输入讲师">
                                 </div>
                             </div>
                         </form>
@@ -276,6 +286,7 @@
                     oldSort: 0,
                     newSort: 0,
                 },
+                teachers: [],
             };
         },
 
@@ -283,6 +294,7 @@
             let _this = this;
             _this.$refs.pagination.size = 10;
             _this.categoryList();
+            _this.teacherList();
             _this.courseList(1);
             //sidebar激活样式方法一
             //this.$parent.activeSidebar("business-course-sidebar");
@@ -509,6 +521,15 @@
                         }
                     })
             },
+
+            teacherList() {
+                let _this = this;
+                Loading.show();
+                _this.$http.get(process.env.VUE_APP_SERVER + "/business/admin/teacher/queryAll/").then((response) => {
+                    Loading.hide();
+                    _this.teachers = response.data["generalClass"];
+                })
+            },
         },
     }
 </script>
@@ -516,5 +537,10 @@
 <style scoped>
     .caption h3{
         font-size: 20px;
+    }
+    @media (max-width: 1199px) {
+        .caption h3{
+            font-size: 16px;
+        }
     }
 </style>
