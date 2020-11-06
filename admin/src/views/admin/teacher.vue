@@ -87,8 +87,7 @@
                             <div class="form-group">
                                 <label for="image" class="col-sm-2 control-label">头像</label>
                                 <div class="col-sm-10">
-                                    <input v-model="teacher.image" type="text" class="form-control" id="image"
-                                           placeholder="请输入头像">
+                                    <input type="file" @change="uploadImage()" id="image" placeholder="请上传头像">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -214,6 +213,18 @@
                             }
                         });
                 });
+            },
+
+            uploadImage() {
+                let _this = this;
+                let formData = new window.FormData();
+                formData.append('file', document.querySelector('#image').files[0]);
+                Loading.show();
+                _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/image', formData)
+                    .then(response => {
+                        Loading.hide();
+                        let resp = response.data;
+                    })
             },
         },
     }
