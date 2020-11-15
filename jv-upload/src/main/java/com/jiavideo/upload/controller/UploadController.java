@@ -3,6 +3,7 @@ package com.jiavideo.upload.controller;
 import com.jiavideo.common.pojo.PageResult;
 import com.jiavideo.common.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,11 @@ import java.util.Collections;
 public class UploadController {
     public static final String BUSINESS_NAME = "文件上传";
 
-    private static final String IMAGE_UPLOAD_ADDRESS = "F:\\video\\upload\\image\\";
+    @Value("${jv.file.path}")
+    private String IMAGE_UPLOAD_ADDRESS;
+
+    @Value("${jv.file.domain}")
+    private String IMAGE_UPLOAD_DOMAIN;
 
     /**
      * 上传图片
@@ -41,7 +46,7 @@ public class UploadController {
 
         String fileName = file.getOriginalFilename();
         String key = UUIDUtil.getShortUuid();
-        File fileUpload = new File(IMAGE_UPLOAD_ADDRESS + key + "-" + fileName);
+        File fileUpload = new File(IMAGE_UPLOAD_ADDRESS + "teacher/" + key + "-" + fileName);
         if (!fileUpload.exists()) {
             //noinspection ResultOfMethodCallIgnored
             fileUpload.mkdirs();
@@ -50,7 +55,7 @@ public class UploadController {
         log.info(fileUpload.getAbsolutePath());
 
         PageResult<Object> pageResult = new PageResult<>();
-        pageResult.setGeneralClass(Collections.singletonList(fileUpload.getAbsolutePath()));
+        pageResult.setGeneralClass(Collections.singletonList(IMAGE_UPLOAD_DOMAIN + "u/teacher/" + key + "-" + fileName));
         return ResponseEntity.ok(pageResult);
     }
 }

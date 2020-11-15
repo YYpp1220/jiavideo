@@ -17,7 +17,7 @@
                 <div>
 					<span class="profile-picture">
 						<img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/static/image/lecturerAvatar/头像1.jpg" v-bind:title="teacher.intro"/>
-						<img v-show="teacher.image" class="media-object" v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
+						<img v-show="teacher.image" class="editable img-responsive editable-click editable-empty" v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
 					</span>
 
                     <div class="space-4"></div>
@@ -88,6 +88,11 @@
                                 <label for="image" class="col-sm-2 control-label">头像</label>
                                 <div class="col-sm-10">
                                     <input type="file" @change="uploadImage()" id="image" placeholder="请上传头像">
+                                    <div v-show="teacher.image" class="row">
+                                        <div class="col-md-4">
+                                            <img v-bind:src="teacher.image" class="img-responsive" alt="头像">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -223,7 +228,8 @@
                 _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/image', formData)
                     .then(response => {
                         Loading.hide();
-                        let resp = response.data;
+                        let resp = response.data["generalClass"];
+                        _this.teacher.image = resp[0];
                     })
             },
         },

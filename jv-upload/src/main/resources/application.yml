@@ -47,3 +47,8 @@ mybatis:
 logging:
   level:
     com.jiavideo.business: debug
+
+jv:
+  file:
+    path: F:\video\upload\image\
+    domain: http://127.0.0.1:10010/file/admin/upload/
