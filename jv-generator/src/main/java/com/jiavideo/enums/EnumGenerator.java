@@ -22,6 +22,7 @@ public class EnumGenerator {
             ToEnumUtil.toJson(CourseLevelEnum.class, bufferObject, bufferArray);
             ToEnumUtil.toJson(CourseChargeEnum.class, bufferObject, bufferArray);
             ToEnumUtil.toJson(CourseStatusEnum.class, bufferObject, bufferArray);
+            ToEnumUtil.toJson(FileUseEnum.class, bufferObject, bufferArray);
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             ToEnumUtil.writeJs(buffer, ENUM_PATH_JS);
         } catch (Exception e) {

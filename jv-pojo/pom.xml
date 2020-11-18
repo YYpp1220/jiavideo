@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jv-business-pojo</module>
+        <module>jv-file-pojo</module>
     </modules>
 
     <artifactId>jv-pojo</artifactId>

@@ -21,6 +21,9 @@
             suffixs: {
                 default: []
             },
+            use: {
+                default: ""
+            },
             afterUpload: {
                 type: Function,
                 default: null
@@ -56,6 +59,7 @@
 
                 // key，必须和后端方法参数名称一致
                 formData.append('file', file);
+                formData.append("use", _this.use);
                 Loading.show();
                 _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/image', formData)
                     .then(response => {

@@ -171,7 +171,7 @@
             ${entity}List(page) {
                 let _this = this;
                 Loading.show();
-                _this.$http.get(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/queryAll/",
+                _this.$http.get(process.env.VUE_APP_SERVER + "/${moduleName}/${entity}/queryAll/",
                     {
                         params: {
                             page: page,
@@ -202,7 +202,7 @@
                 }
                 Loading.show();
                 //let ${entity}Str = JSON.stringify(_this.${entity});
-                _this.$http.post(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/save", _this.${entity})
+                _this.$http.post(process.env.VUE_APP_SERVER + "/${moduleName}/${entity}/save", _this.${entity})
                     .then((response) => {
                         Loading.hide();
                         if (response.statusText === "Created") {
@@ -219,7 +219,7 @@
                 let _this = this;
                 Confirm.show("删除后不可恢复!确认删除？", function () {
                     Loading.show();
-                    _this.$http.delete(process.env.VUE_APP_SERVER + "/${moduleName}/admin/${entity}/delete/" + ${entity}Id)
+                    _this.$http.delete(process.env.VUE_APP_SERVER + "/${moduleName}/${entity}/delete/" + ${entity}Id)
                         .then((response) => {
                             Loading.hide();
                             if (response.statusText === "No Content") {

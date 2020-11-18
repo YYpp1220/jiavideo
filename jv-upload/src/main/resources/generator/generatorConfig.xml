@@ -29,8 +29,8 @@
         </javaTypeResolver>
 
         <!--D. 指定实体类包路径、绝对路径-->
-        <javaModelGenerator targetPackage="com.jiavideo.business.entity"
-                            targetProject="G:\workspace\PracticeProject\jiavideo\jv-pojo\jv-upload-pojo\src\main\java">
+        <javaModelGenerator targetPackage="com.jiavideo.file.entity"
+                            targetProject="G:\workspace\PracticeProject\jiavideo\jv-pojo\jv-file-pojo\src\main\java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -42,7 +42,7 @@
         </sqlMapGenerator>
 
         <!--B. 指定dao接口包路径、绝对路径-->
-        <javaClientGenerator targetPackage="com.jiavideo.business.mapper"
+        <javaClientGenerator targetPackage="com.jiavideo.upload.mapper"
                              targetProject="G:\workspace\PracticeProject\jiavideo\jv-upload\src\main\java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
@@ -53,9 +53,9 @@
         <!--mapperName 映射名称（dao接口与映射文件的名称） -->
 
         <!--F. enableSelectByExample 是否需要逆向生成条件查询方法。-->
-        <table tableName="teacher"
-               domainObjectName="Teacher"
-               mapperName="TeacherMapper"
+        <table tableName="file"
+               domainObjectName="File"
+               mapperName="FileMapper"
                enableCountByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" enableUpdateByExample="true"/>
 

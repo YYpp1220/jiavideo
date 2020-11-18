@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.jiavideo</groupId>
-            <artifactId>jv-pojo</artifactId>
+            <artifactId>jv-file-pojo</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

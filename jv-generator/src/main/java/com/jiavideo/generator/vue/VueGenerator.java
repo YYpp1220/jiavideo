@@ -21,9 +21,9 @@ import java.util.Set;
  */
 public class VueGenerator {
     private static final String PREFIX_MODULE = "jv-";
-    private static final String MODULE = "business";
-    private static final String TO_VUE_PATH = "admin\\src\\views\\admin\\";
-    private static final String TO_GENERATOR_PATH = "jv-business\\src\\main\\resources\\generator\\generatorConfig.xml";
+    private static final String MODULE = "upload";
+    private static final String TO_VUE_PATH = "admin\\src\\views\\file\\";
+    private static final String TO_GENERATOR_PATH = "jv-upload\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) throws Exception {
         //只生成配置文件中的第一个table节点

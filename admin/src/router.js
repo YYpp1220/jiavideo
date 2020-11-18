@@ -8,6 +8,7 @@ import Course from "./views/admin/course.vue"
 import Teacher from "./views/admin/teacher.vue"
 import Chapter from "./views/admin/chapter.vue"
 import Section from "./views/admin/section.vue"
+import File from "./views/file/file.vue"
 
 Vue.use(Router);
 
@@ -49,6 +50,10 @@ export default new Router({
             path: "business/teacher",
             name: "business/teacher",
             component: Teacher,
+        }, {
+            path: "upload/file",
+            name: "upload/file",
+            component: File,
         }]
     }]
 });

@@ -1,8 +1,8 @@
-package com.jiavideo.${moduleName}.controller.admin;
+package com.jiavideo.upload.controller;
 
 import cn.hutool.json.JSONUtil;
-import com.jiavideo.${moduleName}.dto.${Entity}DTO;
-import com.jiavideo.${moduleName}.server.${Entity}Server;
+import com.jiavideo.file.dto.FileDTO;
+import com.jiavideo.upload.server.FileServer;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.common.pojo.PageResult;
 import lombok.extern.slf4j.Slf4j;
@@ -19,56 +19,56 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 章控制器
+ * 文件控制器
  *
  * @author MyMrDiao
  * @date 2020/09/28
  */
 @Slf4j
 @RestController
-@RequestMapping("${entity}")
-public class ${Entity}Controller {
+@RequestMapping("/file")
+public class FileController {
     @Autowired
-    private ${Entity}Server ${entity}Server;
+    private FileServer fileServer;
 
-    public static final String BUSINESS_NAME = "${tableName}";
+    public static final String BUSINESS_NAME = "文件";
 
     /**
      * 查询所有
      *
-     * @return {@link ResponseEntity<List<${Entity}DTO>>}
+     * @return {@link ResponseEntity<List<FileDTO>>}
      */
     @GetMapping("/queryAll")
-    public ResponseEntity<PageResult<${Entity}DTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseEntity<PageResult<FileDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageResult<${Entity}DTO> ${entity}DTOList = ${entity}Server.queryAll(page, pageSize);
-        return ResponseEntity.ok(${entity}DTOList);
+        PageResult<FileDTO> fileDTOList = fileServer.queryAll(page, pageSize);
+        return ResponseEntity.ok(fileDTOList);
     }
 
     /**
      * 保存
      *
-     * @param ${entity}DTO 章dto
+     * @param fileDTO 文件dto
      * @return {@link ResponseEntity<Void>}
      */
     @PostMapping("/save")
-    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid ${Entity}DTO ${entity}DTO, BindingResult result) {
+    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid FileDTO fileDTO, BindingResult result) {
         if (JvException.paramVerificationEx(result)) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
         }
-        ${entity}Server.save(${entity}DTO);
+        fileServer.save(fileDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 删除通过id
      *
-     * @param ${entity}Id 章id
+     * @param fileId 文件id
      * @return {@link ResponseEntity<Void>}
      */
-    @DeleteMapping("/delete/{${entity}Id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String ${entity}Id) {
-        ${entity}Server.deleteById(${entity}Id);
+    @DeleteMapping("/delete/{fileId}")
+    public ResponseEntity<Void> deleteById(@PathVariable String fileId) {
+        fileServer.deleteById(fileId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
