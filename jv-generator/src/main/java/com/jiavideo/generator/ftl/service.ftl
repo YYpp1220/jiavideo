@@ -1,11 +1,11 @@
-package com.jiavideo.${moduleName}.server;
+package com.jiavideo.${module}.server;
 
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.jiavideo.${moduleName}.dto.${Entity}DTO;
-import com.jiavideo.${moduleName}.entity.${Entity};
-import com.jiavideo.${moduleName}.entity.${Entity}Example;
+import com.jiavideo.${module}.dto.${Entity}DTO;
+import com.jiavideo.${module}.entity.${Entity};
+import com.jiavideo.${module}.entity.${Entity}Example;
 import com.jiavideo.${module}.mapper.${Entity}Mapper;
 import com.jiavideo.common.pojo.PageResult;
 import com.jiavideo.common.utils.UUIDUtil;

@@ -79,7 +79,8 @@ public class UploadController {
         fileServer.save(fileDTO);
 
         PageResult<Object> pageResult = new PageResult<>();
-        pageResult.setGeneralClass(Collections.singletonList(IMAGE_UPLOAD_DOMAIN + path));
+        fileDTO.setPath(IMAGE_UPLOAD_DOMAIN + path);
+        pageResult.setGeneralClass(Collections.singletonList(fileDTO));
         return ResponseEntity.ok(pageResult);
     }
 }

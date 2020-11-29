@@ -51,7 +51,7 @@
                                 大章
                             </button>
                             &nbsp;
-                            <button @click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
+                            <button @click="toContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                                 内容
                             </button>
                             &nbsp;
@@ -89,6 +89,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">封面</label>
+                                <div class="col-sm-10">
+                                    <file v-bind:suffixs="['jpg', 'jpeg', 'png']" v-bind:text="'上传封面'" v-bind:after-upload="afterUpload" v-bind:input-id="'image-upload'" v-bind:use="FILE_USE.COURSE.key"></file>
+                                    <div v-show="course.image" class="row">
+                                        <div class="col-md-6">
+                                            <img v-bind:src="course.image" class="img-responsive" alt="头像">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label">名称</label>
                                 <div class="col-sm-10">
                                     <input v-model="course.name" type="text" class="form-control" id="name"
@@ -122,13 +133,6 @@
                                 <div class="col-sm-10">
                                     <input v-model="course.price" type="text" class="form-control" id="price"
                                            placeholder="请输入价格（元）">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="image" class="col-sm-2 control-label">封面</label>
-                                <div class="col-sm-10">
-                                    <input v-model="course.image" type="text" class="form-control" id="image"
-                                           placeholder="请输入封面">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -224,50 +228,15 @@
                 </div>
             </div>
         </div>
-        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i class="ace-icon fa fa-times"></i>
-                        </button>
-                        <h4 class="modal-title">内容编辑</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    {{saveContentLabel}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    <div id="content"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal" aria-label="Close">
-                            <i class="ace-icon fa fa-times"></i>
-                            取消
-                        </button>
-                        <button type="button" class="btn btn-white btn-info btn-round" @click="saveContent()">
-                            <i class="ace-icon fa fa-plus blue"></i>
-                            保存
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
     import Pagination from "../../components/pagination.vue"
+    import File from "../../components/file.vue"
 
     export default {
-        components: {Pagination},
+        components: {Pagination, File},
 
         name: "business-course",
 
@@ -278,6 +247,7 @@
                 COURSE_LEVEL: COURSE_LEVEL,
                 COURSE_CHARGE: COURSE_CHARGE,
                 COURSE_STATUS: COURSE_STATUS,
+                FILE_USE: FILE_USE,
                 categorys: [],
                 tree: {},
                 saveContentLabel: "",
@@ -389,6 +359,13 @@
                 _this.$router.push("/business/chapter");
             },
 
+
+            toContent(course) {
+                let _this = this;
+                SessionStorage.set(SESSION_KEY_COURSE, course);
+                _this.$router.push("/business/content")
+            },
+
             categoryList() {
                 let _this = this;
                 Loading.show();
@@ -438,60 +415,6 @@
                     })
             },
 
-            editContent(course) {
-                let _this = this;
-                let id = course.id;
-                _this.course = course;
-                $("#content").summernote({
-                    focus: true,
-                    height: 300
-                });
-
-                // 先清空历史文本
-                $("#content").summernote('code', '');
-                _this.saveContentLabel = "";
-                Loading.show();
-                _this.$http.get(process.env.VUE_APP_SERVER + '/business/admin/course/findContent/' + id)
-                    .then(response => {
-                        Loading.hide();
-                        let content = response.data["generalClass"];
-                        if (response.statusText === 'OK') {
-                            $("#course-content-modal").modal({backdrop: 'static', keyboard: false});
-                            if (content) {
-                                $("#content").summernote('code', content[0].content);
-                            }
-                            // 定时自动保存
-                            let saveContentInterval = setInterval(function() {
-                                _this.saveContent();
-                            }, 10000);
-                            // 关闭内容框时，自动清除定时任务
-                            $("#course-content-modal").on('hidden.bs.modal', function (e) {
-                                clearInterval(saveContentInterval);
-                            });
-                        }else {
-                            Toast.warning(response.message);
-                        }
-                    });
-            },
-
-            saveContent() {
-                let _this = this;
-                let content = $("#content").summernote('code');
-                _this.$http.post(process.env.VUE_APP_SERVER + '/business/admin/course/saveContent', {
-                    id: _this.course.id,
-                    content: content
-                }).then(response => {
-                    Loading.hide();
-                    if (response.statusText === 'OK') {
-                        /*Toast.success("内容保存成功");*/
-                        let now = Tool.dateFormat("yyyy-MM-dd hh:mm:ss");
-                        _this.saveContentLabel = "最后保存时间：" + now;
-                    } else {
-                        Toast.warning(response.message);
-                    }
-                });
-            },
-
             openSortModal(course) {
                 let _this = this;
                 _this.sort = {
@@ -529,6 +452,11 @@
                     Loading.hide();
                     _this.teachers = response.data["generalClass"];
                 })
+            },
+
+            afterUpload (resp) {
+                let _this = this;
+                _this.course.image = resp[0].path;
             },
         },
     }

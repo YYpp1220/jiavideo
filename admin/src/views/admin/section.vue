@@ -136,10 +136,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="video" class="col-sm-2 control-label">视频</label>
+                                    <label class="col-sm-2 control-label">视频</label>
                                     <div class="col-sm-10">
-                                        <input v-model="section.video" type="text" class="form-control" id="video"
-                                               placeholder="请输入视频">
+                                        <file v-bind:suffixs="['mp4', 'avi']" v-bind:text="'上传视频'" v-bind:after-upload="afterUpload" v-bind:input-id="'video-upload'" v-bind:use="FILE_USE.VIDEO.key"></file>
+                                        <div v-show="section.video" class="row">
+                                            <div class="col-md-9">
+                                                <video v-bind:src="section.video" id="video" controls="controls"></video>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -185,9 +189,10 @@
 
 <script>
     import Pagination from "../../components/pagination.vue"
+    import File from "../../components/file.vue"
 
     export default {
-        components: {Pagination},
+        components: {Pagination, File},
 
         name: "business-section",
 
@@ -196,6 +201,7 @@
                 section: {},
                 sectionLists: [],
                 SECTION_CHARGE: SECTION_CHARGE,
+                FILE_USE: FILE_USE,
                 course: {},
                 chapter: {},
             };
@@ -285,6 +291,31 @@
                         });
                 });
             },
+
+            afterUpload (resp) {
+                let _this = this;
+                _this.section.video = resp[0].path;
+                _this.getTime();
+            },
+
+            /**
+             * 获取视频时长
+             */
+            getTime () {
+                let _this = this;
+                setTimeout(function () {
+                    let ele = document.getElementById("video");
+                    _this.section.time = parseInt(ele.duration, 10);
+                }, 1000);
+            }
         },
     }
 </script>
+
+<style scoped>
+    video {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+</style>

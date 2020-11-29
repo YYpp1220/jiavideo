@@ -27,6 +27,10 @@ public class PageResult<T> {
     public PageResult() {
     }
 
+    public PageResult(List<T> generalClass) {
+        this.generalClass = generalClass;
+    }
+
     public PageResult(Long total, List<T> generalClass) {
         this.total = total;
         this.generalClass = generalClass;

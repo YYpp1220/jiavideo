@@ -1,8 +1,8 @@
-package com.jiavideo.${moduleName}.controller.admin;
+package com.jiavideo.${module}.controller.admin;
 
 import cn.hutool.json.JSONUtil;
-import com.jiavideo.${moduleName}.dto.${Entity}DTO;
-import com.jiavideo.${moduleName}.server.${Entity}Server;
+import com.jiavideo.${module}.dto.${Entity}DTO;
+import com.jiavideo.${module}.server.${Entity}Server;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.common.pojo.PageResult;
 import lombok.extern.slf4j.Slf4j;

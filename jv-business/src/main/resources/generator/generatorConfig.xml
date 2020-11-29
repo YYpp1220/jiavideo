@@ -53,9 +53,9 @@
         <!--mapperName 映射名称（dao接口与映射文件的名称） -->
 
         <!--F. enableSelectByExample 是否需要逆向生成条件查询方法。-->
-        <table tableName="teacher"
-               domainObjectName="Teacher"
-               mapperName="TeacherMapper"
+        <table tableName="course_content_file"
+               domainObjectName="CourseContentFile"
+               mapperName="CourseContentFileMapper"
                enableCountByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" enableUpdateByExample="true"/>
 

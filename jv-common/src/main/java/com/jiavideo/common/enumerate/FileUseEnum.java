@@ -16,7 +16,13 @@ public enum FileUseEnum {
     /**
      * 老师
      */
-    TEACHER("T", "讲师");
+    TEACHER("T", "讲师"),
+
+
+    /**
+     * 视频
+     */
+    VIDEO("V", "视频");
 
     private String code;
 
