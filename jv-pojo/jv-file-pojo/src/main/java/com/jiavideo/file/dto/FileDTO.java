@@ -80,4 +80,9 @@ public class FileDTO {
      */
     private String vod;
 
+    /**
+     * 碎片
+     */
+    private String shard;
+
 }

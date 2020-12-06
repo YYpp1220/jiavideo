@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,10 +56,12 @@ public class FileServer {
      */
     public void save(FileDTO fileDTO){
         File file = JSONUtil.toBean(JSONUtil.toJsonStr(fileDTO), File.class);
-        if (StringUtils.isEmpty(fileDTO.getId())) {
+        File fileDb = selectByKey(fileDTO.getKey());
+        if (StringUtils.isEmpty(fileDb)) {
             this.insert(file);
         }else {
-            this.update(file);
+            fileDb.setShardIndex(fileDTO.getShardIndex());
+            this.update(fileDb);
         }
     }
 
@@ -91,5 +94,33 @@ public class FileServer {
      */
     public void deleteById(String fileId) {
         fileMapper.deleteByPrimaryKey(fileId);
+    }
+
+    /**
+     * 选择的关键
+     *
+     * @param key 关键
+     * @return {@link File}
+     */
+    public File selectByKey(String key) {
+        FileExample example = new FileExample();
+        FileExample.Criteria criteria = example.createCriteria();
+        criteria.andKeyEqualTo(key);
+        List<File> files = fileMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(files)) {
+            return null;
+        }
+        return files.get(0);
+    }
+
+    /**
+     * 找到的关键
+     *
+     * @param key 关键
+     * @return {@link FileDTO}
+     */
+    public FileDTO findByKey(String key) {
+        File file = selectByKey(key);
+        return JSONUtil.toBean(JSONUtil.toJsonStr(file), FileDTO.class);
     }
 }
