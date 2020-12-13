@@ -56,3 +56,11 @@ jv:
   file:
     path: F:\video\upload\image\
     domain: http://127.0.0.1:10010/file/admin/upload/u/
+
+# oss
+oss:
+  accessKeyId: LTAI4Fz5d3U1SFEMDRocNVrk
+  accessKeySecret: vS7kiqas1k29ApwY8FeIqFeTcieg7l
+  endpoint: http://oss-cn-heyuan.aliyuncs.com
+  bucket: jiavideo-course
+  ossDomain: http://jiavideo-course.oss-cn-heyuan.aliyuncs.com/

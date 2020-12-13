@@ -64,7 +64,7 @@
 
                 // 文件分片
                 // 以20MB为一个分片
-                let shardSize = 20 * 1024 * 1024;
+                let shardSize = 10 * 1024 * 1024;
                 // 分片索引 1表示第一个分片
                 let shardIndex = 1;
                 let size = file.size;
@@ -129,7 +129,7 @@
                     let base64 = e.target.result;
                     param.shard = base64;
 
-                    _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/image', param)
+                    _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/ossAppend', param)
                         .then(response => {
 
                             let resp = response.data["generalClass"];

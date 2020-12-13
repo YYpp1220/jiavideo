@@ -61,7 +61,7 @@
                 formData.append('file', file);
                 formData.append("use", _this.use);
                 Loading.show();
-                _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/image', formData)
+                _this.$http.post(process.env.VUE_APP_SERVER + '/file/admin/upload/ossSimple', formData)
                     .then(response => {
                         Loading.hide();
                         let resp = response.data["generalClass"];
