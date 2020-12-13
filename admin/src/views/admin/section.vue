@@ -47,15 +47,15 @@
 
             <tbody>
             <tr v-for="section in sectionLists">
-                    <td>{{section.id}}</td>
-                    <td>{{section.title}}</td>
-                    <td>{{section.video}}</td>
-                    <td>{{section.time | formatSecond}}</td>
-                    <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
-                    <td>{{section.sort}}</td>
-                    <td>{{section.createdAt}}</td>
-                    <td>{{section.updatedAt}}</td>
-                    <td>{{section.vod}}</td>
+                <td>{{section.id}}</td>
+                <td>{{section.title}}</td>
+                <td>{{section.video}}</td>
+                <td>{{section.time | formatSecond}}</td>
+                <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
+                <td>{{section.sort}}</td>
+                <td>{{section.createdAt}}</td>
+                <td>{{section.updatedAt}}</td>
+                <td>{{section.vod}}</td>
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
@@ -116,65 +116,72 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-2 control-label">标题</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.title" type="text" class="form-control" id="title"
-                                               placeholder="请输入标题">
-                                    </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">标题</label>
+                                <div class="col-sm-10">
+                                    <input v-model="section.title" type="text" class="form-control" id="title"
+                                           placeholder="请输入标题">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">课程</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{course.name}}</p>
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">课程</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">{{course.name}}</p>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">大章</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{chapter.name}}</p>
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">大章</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">{{chapter.name}}</p>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">视频</label>
-                                    <div class="col-sm-10">
-                                        <big-file v-bind:suffixs="['mp4', 'avi']" v-bind:text="'上传大视频'" v-bind:after-upload="afterUpload" v-bind:input-id="'video-upload'" v-bind:use="FILE_USE.VIDEO.key"></big-file>
-                                        <div v-show="section.video" class="row">
-                                            <div class="col-md-9">
-                                                <video v-bind:src="section.video" id="video" controls="controls"></video>
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">视频</label>
+                                <div class="col-sm-10">
+                                    <vod v-bind:suffixs="['mp4', 'avi']" v-bind:text="'上传VOD'"
+                                              v-bind:after-upload="afterUpload" v-bind:input-id="'video-upload'"
+                                              v-bind:use="FILE_USE.VIDEO.key"></vod>
+                                    <div v-show="section.video" class="row">
+                                        <div class="col-md-9">
+                                            <video v-bind:src="section.video" id="video" controls="controls"></video>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="time" class="col-sm-2 control-label">时长</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.time" type="text" class="form-control" id="time"
-                                               placeholder="请输入时长">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="time" class="col-sm-2 control-label">时长</label>
+                                <div class="col-sm-10">
+                                    <input v-model="section.time" type="text" class="form-control" id="time"
+                                           placeholder="请输入时长">
                                 </div>
-                                <div class="form-group">
-                                    <label for="charge" class="col-sm-2 control-label">收费</label>
-                                    <div class="col-sm-10">
-                                        <select v-model="section.charge" type="text" class="form-control" id="charge">
-                                            <option v-for="o in SECTION_CHARGE" v-bind:value="o.key">{{o.value}}</option>
-                                        </select>
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">视频</label>
+                                <div class="col-sm-10">
+                                    <input v-model="section.video" class="form-control" disabled>
                                 </div>
-                                <div class="form-group">
-                                    <label for="sort" class="col-sm-2 control-label">顺序</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.sort" type="text" class="form-control" id="sort"
-                                               placeholder="请输入顺序">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">VOD</label>
+                                <div class="col-sm-10">
+                                    <input v-model="section.vod" class="form-control" disabled>
                                 </div>
-                                <div class="form-group">
-                                    <label for="vod" class="col-sm-2 control-label">vod</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.vod" type="text" class="form-control" id="vod"
-                                               placeholder="请输入vod">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="charge" class="col-sm-2 control-label">收费</label>
+                                <div class="col-sm-10">
+                                    <select v-model="section.charge" type="text" class="form-control" id="charge">
+                                        <option v-for="o in SECTION_CHARGE" v-bind:value="o.key">{{o.value}}</option>
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sort" class="col-sm-2 control-label">顺序</label>
+                                <div class="col-sm-10">
+                                    <input v-model="section.sort" type="text" class="form-control" id="sort"
+                                           placeholder="请输入顺序">
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -190,9 +197,10 @@
 <script>
     import Pagination from "../../components/pagination.vue"
     import BigFile from "../../components/big-file.vue"
+    import Vod from "../../components/vod";
 
     export default {
-        components: {Pagination, BigFile},
+        components: {Pagination, BigFile, Vod},
 
         name: "business-section",
 
@@ -252,9 +260,9 @@
             },
             save() {
                 let _this = this;
+                _this.section.video = "";
                 //保存校验
                 if (!Validator.require(_this.section.title, "标题")
-                    || !Validator.require(_this.section.video, "视频")
                     || !Validator.length(_this.section.title, "标题", 1, "50")
                     || !Validator.length(_this.section.video, "视频", 1, "200")
                 ) {
@@ -292,16 +300,17 @@
                 });
             },
 
-            afterUpload (resp) {
+            afterUpload(resp) {
                 let _this = this;
                 _this.section.video = resp[0].path;
+                _this.section.vod = resp[0].vod;
                 _this.getTime();
             },
 
             /**
              * 获取视频时长
              */
-            getTime () {
+            getTime() {
                 let _this = this;
                 setTimeout(function () {
                     let ele = document.getElementById("video");

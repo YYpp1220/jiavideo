@@ -1,9 +1,14 @@
 package com.jiavideo.upload.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.vod.model.v20170321.GetMezzanineInfoResponse;
 import com.jiavideo.common.enumerate.FileUseEnum;
 import com.jiavideo.common.pojo.PageResult;
 import com.jiavideo.common.utils.Base64ToMultipartFile;
 import com.jiavideo.common.utils.UUIDUtil;
+import com.jiavideo.common.utils.VodUtil;
 import com.jiavideo.file.dto.FileDTO;
 import com.jiavideo.upload.server.FileServer;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +38,12 @@ public class UploadController {
 
     @Value("${jv.file.domain}")
     private String IMAGE_UPLOAD_DOMAIN;
+
+    @Value("${vod.accessKeyId}")
+    private String accessKeyId;
+
+    @Value("${vod.accessKeySecret}")
+    private String accessKeySecret;
 
     @Autowired
     private FileServer fileServer;
@@ -141,14 +152,22 @@ public class UploadController {
     }
 
     @GetMapping("/check/{key}")
-    public ResponseEntity<PageResult> check(@PathVariable String key) {
+    public ResponseEntity<PageResult> check(@PathVariable String key) throws ClientException {
         log.info("检查上传分片开始：{}", key);
         PageResult<FileDTO> result = new PageResult<>();
         FileDTO fileDTO = fileServer.findByKey(key);
         if (!StringUtils.isEmpty(fileDTO.getId())) {
-            fileDTO.setPath(IMAGE_UPLOAD_DOMAIN + fileDTO.getPath());
-            result.setGeneralClass(Collections.singletonList(fileDTO));
+            if (StringUtils.isEmpty(fileDTO.getVod())) {
+                fileDTO.setPath(IMAGE_UPLOAD_DOMAIN + fileDTO.getPath());
+            } else {
+                DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+                GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDTO.getVod());
+                log.info("获取视频信息，response：{}", JSON.toJSONString(response));
+                String fileUrl = response.getMezzanine().getFileURL();
+                fileDTO.setPath(fileUrl);
+            }
         }
+        result.setGeneralClass(Collections.singletonList(fileDTO));
         return ResponseEntity.ok(result);
     }
 }

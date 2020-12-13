@@ -64,3 +64,8 @@ oss:
   endpoint: http://oss-cn-heyuan.aliyuncs.com
   bucket: jiavideo-course
   ossDomain: http://jiavideo-course.oss-cn-heyuan.aliyuncs.com/
+
+# vod
+vod:
+  accessKeyId: LTAI4FzA5JSEvZ8ab4XzECM6
+  accessKeySecret: FeMz61eE0FjyiuOGVZEX07EjOgFWWH
