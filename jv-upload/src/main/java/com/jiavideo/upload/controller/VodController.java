@@ -12,6 +12,7 @@ import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
 import com.aliyuncs.vod.model.v20170321.GetMezzanineInfoResponse;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.jiavideo.common.enumerate.FileUseEnum;
 import com.jiavideo.common.pojo.PageResult;
 import com.jiavideo.common.utils.Base64ToMultipartFile;
@@ -24,10 +25,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -114,6 +112,25 @@ public class VodController {
         fileDTO.setPath(fileUrl);
         pageResult.setGeneralClass(Collections.singletonList(fileDTO));
 
+        return ResponseEntity.ok(pageResult);
+    }
+
+    @GetMapping("/getAuth/{vod}")
+    public ResponseEntity<PageResult> getAuth(@PathVariable String vod) {
+        log.info("获取播放授权开始！");
+        PageResult<String> pageResult = new PageResult<>();
+        DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
+        GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
+        try {
+            response = VodUtil.getVideoPlayAuth(vodClient, vod);
+            log.info("授权码 = {}", response.getPlayAuth());
+            pageResult.setGeneralClass(Collections.singletonList(response.getPlayAuth()));
+            // videoMeta信息
+            log.info("VideoMeta = {}", JSON.toJSONString(response.getVideoMeta()));
+        } catch (Exception e) {
+            System.out.println("ErrorMessage = " + e.getLocalizedMessage());
+        }
+        log.info("获取播放授权结束");
         return ResponseEntity.ok(pageResult);
     }
 }

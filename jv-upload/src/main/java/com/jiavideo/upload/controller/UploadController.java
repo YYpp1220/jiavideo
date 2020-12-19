@@ -159,15 +159,16 @@ public class UploadController {
         if (!StringUtils.isEmpty(fileDTO.getId())) {
             if (StringUtils.isEmpty(fileDTO.getVod())) {
                 fileDTO.setPath(IMAGE_UPLOAD_DOMAIN + fileDTO.getPath());
+                result.setGeneralClass(Collections.singletonList(fileDTO));
             } else {
                 DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
                 GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDTO.getVod());
                 log.info("获取视频信息，response：{}", JSON.toJSONString(response));
                 String fileUrl = response.getMezzanine().getFileURL();
                 fileDTO.setPath(fileUrl);
+                result.setGeneralClass(Collections.singletonList(fileDTO));
             }
         }
-        result.setGeneralClass(Collections.singletonList(fileDTO));
         return ResponseEntity.ok(result);
     }
 }
