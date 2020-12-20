@@ -302,23 +302,23 @@
                                 <li>
                                     <a href="#">
                                         <i class="ace-icon fa fa-cog"></i>
-                                        Settings
+                                        系统设置
                                     </a>
                                 </li>
 
                                 <li>
                                     <a href="profile.html">
                                         <i class="ace-icon fa fa-user"></i>
-                                        Profile
+                                        个人信息
                                     </a>
                                 </li>
 
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#">
+                                    <a @click="logout()" href="#">
                                         <i class="ace-icon fa fa-power-off"></i>
-                                        Logout
+                                        退出登录
                                     </a>
                                 </li>
                             </ul>
@@ -596,7 +596,27 @@
                     parentLi.siblings().find("li").removeClass("active");
                     parentLi.addClass("open active")
                 }
-            }
+            },
+
+            /**
+             * 退出登录
+             */
+            logout() {
+                Tool.setLoginUser(null);
+                let _this = this;
+                Loading.show();
+                _this.$http.get(process.env.VUE_APP_SERVER + "/system/user/logout")
+                    .then((response) => {
+                        Loading.hide();
+                        if (response.statusText === "OK") {
+                            Tool.setLoginUser(null);
+                            this.$router.push("/login");
+                        } else if (response.statusText === "Multi-Status") {
+                            let paramError = response.data;
+                            Toast.warning(paramError);
+                        }
+                    });
+            },
         }
     }
 </script>
