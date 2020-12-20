@@ -31,6 +31,10 @@ public enum ExceptionEnum {
      */
     INVALID_USERNAME_PASSWORD(400, "无效的用户名和密码！"),
     /**
+     * 用户已经存在
+     */
+    USER_ALREADY_EXIST(440, "用户名已经存在！"),
+    /**
      * 无效的服务器id的秘密
      */
     INVALID_SERVER_ID_SECRET(400, "无效的服务id和密钥！"),

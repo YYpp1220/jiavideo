@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="context" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--覆盖生成XML文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <!-- 生成的实体类添加toString()方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <commentGenerator>
+            <!--E. 抑制注释，默认是false表示生成注释。true表示不要注释。-->
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.203.128:3306/jiavideo?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf-8&amp;nullCatalogMeansCurrent=true"
+                        userId="root"
+                        password="LxR52013141220"/>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--D. 指定实体类包路径、绝对路径-->
+        <javaModelGenerator targetPackage="com.jiavideo.user.entity"
+                            targetProject="G:\workspace\PracticeProject\jiavideo\jv-pojo\jv-user-pojo\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--C. 指定dao映射文件路径-->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="G:\workspace\PracticeProject\jiavideo\jv-system\src\main\resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!--B. 指定dao接口包路径、绝对路径-->
+        <javaClientGenerator targetPackage="com.jiavideo.system.mapper"
+                             targetProject="G:\workspace\PracticeProject\jiavideo\jv-system\src\main\java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+
+        <!-- A. 对哪些表进行逆向，自动生成实体类、dao接口、接口映射 -->
+        <!--tableName 表名称； domainObjectName 实体类名称； -->
+        <!--mapperName 映射名称（dao接口与映射文件的名称） -->
+
+        <!--F. enableSelectByExample 是否需要逆向生成条件查询方法。-->
+        <table tableName="user"
+               domainObjectName="User"
+               mapperName="UserMapper"
+               enableCountByExample="true" enableDeleteByExample="true"
+               enableSelectByExample="true" enableUpdateByExample="true"/>
+
+    </context>
+</generatorConfiguration>

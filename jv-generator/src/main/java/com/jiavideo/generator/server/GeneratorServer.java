@@ -23,9 +23,9 @@ import java.util.Set;
  */
 public class GeneratorServer {
     private static final String PREFIX_MODULE = "jv-";
-    private static final String MODULE = "business";
-    private static final String MODULE_NAME = "file";
-    private static final String TO_DTO_PATH = "jv-pojo\\jv-file-pojo\\src\\main\\java\\com\\jiavideo\\file\\dto\\";
+    private static final String MODULE = "system";
+    private static final String MODULE_NAME = "user";
+    private static final String TO_DTO_PATH = "jv-pojo\\jv-user-pojo\\src\\main\\java\\com\\jiavideo\\user\\dto\\";
     private static final String TO_SERVER_PATH = PREFIX_MODULE + MODULE +"\\src\\main\\java\\com\\jiavideo\\" + MODULE + "\\server\\";
     private static final String TO_CONTROLLER_PATH = PREFIX_MODULE + MODULE + "\\src\\main\\java\\com\\jiavideo\\" + MODULE + "\\controller\\";
     private static final String TO_GENERATOR_PATH = PREFIX_MODULE + MODULE +"\\src\\main\\resources\\generator\\generatorConfig.xml";

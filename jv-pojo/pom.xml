@@ -12,6 +12,7 @@
     <modules>
         <module>jv-business-pojo</module>
         <module>jv-file-pojo</module>
+        <module>jv-user-pojo</module>
     </modules>
 
     <artifactId>jv-pojo</artifactId>

@@ -1,8 +1,8 @@
-package com.jiavideo.${module}.controller.admin;
+package com.jiavideo.system.controller;
 
 import cn.hutool.json.JSONUtil;
-import com.jiavideo.${moduleName}.dto.${Entity}DTO;
-import com.jiavideo.${module}.server.${Entity}Server;
+import com.jiavideo.user.dto.UserDTO;
+import com.jiavideo.system.server.UserServer;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.common.pojo.PageResult;
 import lombok.extern.slf4j.Slf4j;
@@ -26,49 +26,53 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("${entity}")
-public class ${Entity}Controller {
+public class UserController {
     @Autowired
-    private ${Entity}Server ${entity}Server;
+    private UserServer userServer;
 
-    public static final String BUSINESS_NAME = "${tableName}";
+    public static final String BUSINESS_NAME = "用户";
 
     /**
      * 查询所有
      *
-     * @return {@link ResponseEntity<List<${Entity}DTO>>}
+     * @return {@link ResponseEntity<List<UserDTO>>}
      */
     @GetMapping("/queryAll")
-    public ResponseEntity<PageResult<${Entity}DTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public ResponseEntity<PageResult<UserDTO>> queryAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageResult<${Entity}DTO> ${entity}DTOList = ${entity}Server.queryAll(page, pageSize);
-        return ResponseEntity.ok(${entity}DTOList);
+        PageResult<UserDTO> userDTOList = userServer.queryAll(page, pageSize);
+        return ResponseEntity.ok(userDTOList);
     }
 
     /**
      * 保存
      *
-     * @param ${entity}DTO 章dto
+     * @param userDTO 章dto
      * @return {@link ResponseEntity<Void>}
      */
     @PostMapping("/save")
-    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid ${Entity}DTO ${entity}DTO, BindingResult result) {
+    public ResponseEntity<Object> saveBusiness(@RequestBody @Valid UserDTO userDTO, BindingResult result) {
         if (JvException.paramVerificationEx(result)) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
         }
-        ${entity}Server.save(${entity}DTO);
+        try {
+            userServer.save(userDTO);
+        } catch (JvException e) {
+            log.error("异常信息为：{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 删除通过id
      *
-     * @param ${entity}Id 章id
+     * @param userId 章id
      * @return {@link ResponseEntity<Void>}
      */
-    @DeleteMapping("/delete/{${entity}Id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String ${entity}Id) {
-        ${entity}Server.deleteById(${entity}Id);
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<Void> deleteById(@PathVariable String userId) {
+        userServer.deleteById(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

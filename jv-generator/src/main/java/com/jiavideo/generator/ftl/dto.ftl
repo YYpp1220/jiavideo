@@ -1,4 +1,4 @@
-package com.jiavideo.${module}.dto;
+package com.jiavideo.${moduleName}.dto;
 
 import lombok.Data;
 <#list typeSet as type>

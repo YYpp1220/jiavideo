@@ -27,13 +27,13 @@ spring:
         # 对应模块所在名称
         - id: jv-system
           # 对应模块url
-          uri: http://127.0.0.1:8086
+          uri: lb://jv-system
           predicates:
           # 转发所添加的路径
-            - Path=/system/**
-         # filters:
+            - Path=/system/user/**
+          filters:
           # 表示过滤1个路径，2表示两个路径，以此类推
-           # - StripPrefix=1
+            - StripPrefix=1
         # 对应模块所在名称
         - id: jv-business
           # 对应模块url
