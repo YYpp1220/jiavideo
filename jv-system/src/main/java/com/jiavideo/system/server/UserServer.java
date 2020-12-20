@@ -70,7 +70,8 @@ public class UserServer {
      * @param user 章
      */
     private void update(User user) {
-        userMapper.updateByPrimaryKey(user);
+        user.setPassword(null);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     /**
@@ -115,5 +116,17 @@ public class UserServer {
         } else {
             return users.get(0);
         }
+    }
+
+    /**
+     * 保存密码
+     *
+     * @param userDTO 用户dto
+     */
+    public void savePassword(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setPassword(userDTO.getPassword());
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

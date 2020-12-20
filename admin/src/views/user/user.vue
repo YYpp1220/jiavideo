@@ -32,6 +32,10 @@
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
+                        <button @click="editPassword(user)" class="btn btn-xs btn-info">
+                            <i class="ace-icon fa fa-key bigger-120"></i>
+                        </button>
+
                         <button @click="edit(user)" class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                         </button>
@@ -103,10 +107,10 @@
                                                placeholder="请输入昵称">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div v-show="!user.id" class="form-group">
                                     <label for="password" class="col-sm-2 control-label">密码</label>
                                     <div class="col-sm-10">
-                                        <input v-model="user.password" type="text" class="form-control" id="password"
+                                        <input v-model="user.password" type="password" class="form-control" id="password"
                                                placeholder="请输入密码">
                                     </div>
                                 </div>
@@ -115,6 +119,40 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         <button @click="save()" type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div id="edit-password-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">修改密码</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">
+                                    密码
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="password" v-model="user.password" name="password">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            取消
+                        </button>
+                        <button @click="savePassword()" type="button" class="btn btn-white btn-info btn-round">
+                            <i class="ace-icon fa fa-plus blue"></i>
+                            保存密码
+                        </button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -181,6 +219,7 @@
                 ) {
                     return;
                 }
+                _this.user.password = hex_md5(_this.user.password + KEY);
                 Loading.show();
                 //let userStr = JSON.stringify(_this.user);
                 _this.$http.post(process.env.VUE_APP_SERVER + "/system/user/save", _this.user)
@@ -209,6 +248,39 @@
                             }
                         });
                 });
+            },
+
+            /**
+             * 点击修改密码
+             * @param user
+             */
+            editPassword(user) {
+                let _this = this;
+                _this.user = $.extend({}, user);
+                _this.user.password = null;
+                $("#edit-password-modal").modal("show");
+            },
+
+            /**
+             * 保存密码
+             */
+            savePassword() {
+                let _this = this;
+
+                _this.user.password = hex_md5(_this.user.password + KEY);
+                Loading.show();
+                _this.$http.post(process.env.VUE_APP_SERVER + "/system/user/savePassword", _this.user)
+                    .then((response) => {
+                        Loading.hide();
+                        if (response.statusText === "Created") {
+                            $("#edit-password-modal").modal("hide");
+                            _this.userList(1);
+                            Toast.success("保存成功！")
+                        } else if (response.statusText === "Multi-Status") {
+                            let paramError = response.data;
+                            Toast.warning(paramError);
+                        }
+                    })
             },
         },
     }

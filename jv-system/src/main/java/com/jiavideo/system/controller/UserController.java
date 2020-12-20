@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -52,6 +53,7 @@ public class UserController {
      */
     @PostMapping("/save")
     public ResponseEntity<Object> saveBusiness(@RequestBody @Valid UserDTO userDTO, BindingResult result) {
+        userDTO.setPassword(DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes()));
         if (JvException.paramVerificationEx(result)) {
             return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
         }
@@ -74,5 +76,22 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable String userId) {
         userServer.deleteById(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    /**
+     * 保存密码
+     *
+     * @param userDTO 用户dto
+     * @param result  结果
+     * @return {@link ResponseEntity<Object>}
+     */
+    @PostMapping("/savePassword")
+    public ResponseEntity<Object> savePassword(@RequestBody @Valid UserDTO userDTO, BindingResult result) {
+        userDTO.setPassword(DigestUtils.md5DigestAsHex(userDTO.getPassword().getBytes()));
+        if (JvException.paramVerificationEx(result)) {
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body("请求参数异常！");
+        }
+        userServer.savePassword(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
