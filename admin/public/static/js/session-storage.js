@@ -2,6 +2,8 @@
 SESSION_KEY_COURSE = "SESSION_KEY_COURSE";
 // 大章管理页面点击小节管理时，保存大章信息
 SESSION_KEY_CHAPTER = "SESSION_KEY_CHAPTER";
+// 保存用户登录信息的key
+SESSION_KEY_LOGIN_USER = "SESSION_KEY_LOGIN_USER";
 
 SessionStorage = {
     get: function(key) {

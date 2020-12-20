@@ -1,16 +1,19 @@
 package com.jiavideo.system.server;
 
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiavideo.common.enumerate.ExceptionEnum;
 import com.jiavideo.common.excepton.JvException;
+import com.jiavideo.user.dto.LoginUserDTO;
 import com.jiavideo.user.dto.UserDTO;
 import com.jiavideo.user.entity.User;
 import com.jiavideo.user.entity.UserExample;
 import com.jiavideo.system.mapper.UserMapper;
 import com.jiavideo.common.pojo.PageResult;
 import com.jiavideo.common.utils.UUIDUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
  * @author MyMrDiao
  * @date 2020/09/28
  */
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserServer {
@@ -128,5 +132,25 @@ public class UserServer {
         user.setId(userDTO.getId());
         user.setPassword(userDTO.getPassword());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 登录
+     *
+     * @param userDTO 用户dto
+     */
+    public LoginUserDTO login(UserDTO userDTO) {
+        User user = this.selectByLoginName(userDTO.getLoginName());
+        if (StringUtils.isEmpty(user)) {
+            log.error("用户名不存在！{}", userDTO.getLoginName());
+            throw new JvException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
+        } else {
+            if (user.getPassword().equals(userDTO.getPassword())) {
+                return JSONUtil.toBean(JSONUtil.toJsonStr(user), LoginUserDTO.class);
+            } else {
+                log.error("密码不正确！输入密码：{}，原密码：{}", userDTO.getPassword(), user.getPassword());
+                throw new JvException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
+            }
+        }
     }
 }
