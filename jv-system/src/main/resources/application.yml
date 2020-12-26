@@ -29,6 +29,10 @@ spring:
       # 连接过期时间
       connection-timeout: 30000
       connection-test-query: SELECT 1
+  # redis配置
+  redis:
+    host: 192.168.203.128
+    port: 6379
 
 eureka:
   client:

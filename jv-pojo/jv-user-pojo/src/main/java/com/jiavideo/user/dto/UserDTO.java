@@ -31,4 +31,13 @@ public class UserDTO {
      */
     private String password;
 
+    /**
+     * 图片的代码
+     */
+    private String imageCode;
+
+    /**
+     * 图像代码标记
+     */
+    private String imageCodeToken;
 }

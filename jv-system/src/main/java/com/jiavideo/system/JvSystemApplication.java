@@ -1,5 +1,6 @@
 package com.jiavideo.system;
 
+import com.jiavideo.common.config.KaptchaConfig;
 import com.jiavideo.common.config.LogAspect;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 @EnableEurekaClient
 @MapperScan("com.jiavideo.system.mapper")
-@ImportAutoConfiguration(LogAspect.class)
+@ImportAutoConfiguration(classes = {LogAspect.class, KaptchaConfig.class})
 public class JvSystemApplication {
 
     /*private static final Logger LOG = LoggerFactory.getLogger(JvSystemApplication.class);*/

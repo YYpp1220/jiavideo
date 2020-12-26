@@ -43,6 +43,17 @@
 														</span>
                                                 </label>
 
+                                                <label class="block clearfix">
+                                                    <span class="block input-icon input-icon-right">
+                                                        <div class="input-group">
+                                                            <input v-model="checkCode" type="text" class="form-control" placeholder="验证码">
+                                                            <span class="input-group-addon" id="basic-addon2">
+                                                                <img @click="loadImageCode()" id="image-code" alt="验证码"/>
+                                                            </span>
+                                                        </div>
+                                                    </span>
+                                                </label>
+
                                                 <div class="space"></div>
 
                                                 <div class="clearfix">
@@ -79,6 +90,7 @@
         data: function () {
             return {
                 user: {},
+                checkCode: "",
                 // 默认勾选记住我
                 remember: true,
             };
@@ -94,6 +106,8 @@
             if (rememberUser) {
                 _this.user = rememberUser;
             }
+
+            _this.loadImageCode();
         },
         methods: {
             login() {
@@ -107,6 +121,10 @@
                 if (md5 !== rememberUser.md5) {
                     _this.user.password = hex_md5(_this.user.password + KEY);
                 }
+
+                _this.user.imageCodeToken = _this.imageCodeToken;
+                _this.user.imageCode = _this.checkCode;
+
                 Loading.show();
                 _this.$http.post(process.env.VUE_APP_SERVER + "/system/user/login", _this.user)
                     .then((response) => {
@@ -134,9 +152,30 @@
                         } else if (response.statusText === "Multi-Status") {
                             let paramError = response.data;
                             Toast.warning(paramError);
+                            _this.user.password = "";
+                            _this.loadImageCode();
+                        } else if (response.statusText === "Success (208)") {
+                            let paramError = response.data;
+                            Toast.warning(paramError);
+                            _this.user.password = "";
                         }
                     });
+            },
+
+            /**
+             * 加载图片验证码
+             */
+            loadImageCode() {
+                let _this = this;
+                _this.imageCodeToken = Tool.uuid(8)
+                $("#image-code").attr('src', process.env.VUE_APP_SERVER + '/system/user/kaptcha/imageCode/' + _this.imageCodeToken)
             },
         },
     }
 </script>
+
+<style scoped>
+    .input-group-addon{
+        padding: 0;
+    }
+</style>
