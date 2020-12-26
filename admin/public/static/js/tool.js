@@ -17,7 +17,7 @@ Tool = {
      * @param obj 校验参数
      */
     isNotEmpty: function (obj) {
-        return !this.isEmpty();
+        return !this.isEmpty(obj);
     },
 
     /**

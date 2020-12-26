@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: jv-gateway
+  redis:
+    host: 192.168.203.128
+    port: 6379
   cloud:
     gateway:
       globalcors:
@@ -32,6 +35,8 @@ spring:
           # 转发所添加的路径
             - Path=/system/user/**
           filters:
+            - name: Login
+              agrs: true
           # 表示过滤1个路径，2表示两个路径，以此类推
             - StripPrefix=1
         # 对应模块所在名称
@@ -41,6 +46,9 @@ spring:
           predicates:
             # 转发所添加的路径
             - Path=/business/**
+          filters:
+            - name: Login
+              agrs: true
         # 对应模块所在名称
         - id: jv-upload
           # 对应模块url
@@ -49,6 +57,8 @@ spring:
             # 转发所添加的路径
             - Path=/file/admin/upload/**
           filters:
+            - name: Login
+              agrs: true
             # 表示过滤1个路径，2表示两个路径，以此类推
             - StripPrefix=2
 
