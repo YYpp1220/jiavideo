@@ -605,7 +605,7 @@
                 Tool.setLoginUser(null);
                 let _this = this;
                 Loading.show();
-                _this.$http.get(process.env.VUE_APP_SERVER + "/system/user/logout")
+                _this.$http.get(process.env.VUE_APP_SERVER + "/system/user/logout/" + _this.loginUser.token)
                     .then((response) => {
                         Loading.hide();
                         if (response.statusText === "OK") {

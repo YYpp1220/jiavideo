@@ -25,4 +25,9 @@ public class LoginUserDTO {
      * 昵称
      */
     private String name;
+
+    /**
+     * 令牌
+     */
+    private String token;
 }
