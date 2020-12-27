@@ -13,6 +13,7 @@
         <module>jv-business-pojo</module>
         <module>jv-file-pojo</module>
         <module>jv-user-pojo</module>
+        <module>jv-auth-pojo</module>
     </modules>
 
     <artifactId>jv-pojo</artifactId>

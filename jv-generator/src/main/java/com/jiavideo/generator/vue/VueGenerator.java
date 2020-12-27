@@ -23,7 +23,7 @@ public class VueGenerator {
     private static final String PREFIX_MODULE = "jv-";
     private static final String MODULE = "system";
     private static final String TO_VUE_PATH = "admin\\src\\views\\user\\";
-    private static final String TO_GENERATOR_PATH = "jv-system\\src\\main\\resources\\generator\\generatorConfig.xml";
+    private static final String TO_GENERATOR_PATH = "jv-auth\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) throws Exception {
         //只生成配置文件中的第一个table节点

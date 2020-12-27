@@ -11,6 +11,7 @@ import Chapter from "./views/admin/chapter.vue"
 import Section from "./views/admin/section.vue"
 import File from "./views/file/file.vue"
 import User from "./views/user/user.vue"
+import Resource from "./views/user/resource.vue"
 
 Vue.use(Router);
 
@@ -70,6 +71,10 @@ export default new Router({
             path: "system/user",
             name: "system/user",
             component: User,
+        }, {
+            path: "system/resource",
+            name: "system/resource",
+            component: Resource,
         }]
     }]
 });

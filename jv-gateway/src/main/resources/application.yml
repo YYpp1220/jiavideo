@@ -61,6 +61,18 @@ spring:
               agrs: true
             # 表示过滤1个路径，2表示两个路径，以此类推
             - StripPrefix=2
+              # 对应模块所在名称
+        - id: jv-auth
+          # 对应模块url
+          uri: lb://jv-auth
+          predicates:
+            # 转发所添加的路径
+            - Path=/user/admin/auth/**
+          filters:
+            - name: Login
+              agrs: true
+            # 表示过滤1个路径，2表示两个路径，以此类推
+            - StripPrefix=2
 
 eureka:
   client:
