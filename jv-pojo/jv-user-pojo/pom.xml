@@ -11,5 +11,11 @@
 
     <artifactId>jv-user-pojo</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.jiavideo</groupId>
+            <artifactId>jv-auth-pojo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package com.jiavideo.system.mapper;
 
+import com.jiavideo.auth.dto.ResourceDTO;
 import com.jiavideo.user.entity.User;
 import com.jiavideo.user.entity.UserExample;
 import java.util.List;
@@ -101,4 +102,12 @@ public interface UserMapper {
      * @return int
      */
     int updateByPrimaryKey(User record);
+
+    /**
+     * 找到资源
+     *
+     * @param userId 用户id
+     * @return {@link List<ResourceDTO>}
+     */
+    List<ResourceDTO> findResources(@Param("userId") String userId);
 }

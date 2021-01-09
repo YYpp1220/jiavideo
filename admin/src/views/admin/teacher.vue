@@ -13,7 +13,7 @@
         </p>
         <pagination ref="pagination" v-bind:list="teacherList"></pagination>
         <div class="row">
-            <div v-for="teacher in teacherLists" class="col-sm-3 center">
+            <div v-for="teacher in teacherLists" class="col-sm-3">
                 <div>
 					<span class="profile-picture">
 						<img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/static/image/lecturerAvatar/头像1.jpg" v-bind:title="teacher.intro"/>
@@ -37,10 +37,12 @@
 
                 <div class="profile-contact-info">
                     <div class="profile-contact-links align-center">
-                        <a href="#" class="text-info bigger-110" v-bind:title="teacher.motto">
-                            <i class="ace-icon fa fa-user"></i>
-                            {{teacher.name}}【{{teacher.nickname}}】
-                        </a>
+                        <div class="text-center">
+                            <a href="#" class="text-info bigger-110" v-bind:title="teacher.motto">
+                                <i class="ace-icon fa fa-user"></i>
+                                {{teacher.name}}【{{teacher.nickname}}】
+                            </a>
+                        </div>
                     </div>
 
                     <div class="space-6"></div>

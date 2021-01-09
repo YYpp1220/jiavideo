@@ -50,6 +50,7 @@
     id, `name`, summary, `time`, price, image, `level`, charge, `status`, enroll, sort, 
     created_at, updated_at, teacher_id
   </sql>
+  <!-- web端【全部课程】页面，查询课程列表 -->
   <select id="selectByExample" parameterType="com.jiavideo.business.entity.CourseExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

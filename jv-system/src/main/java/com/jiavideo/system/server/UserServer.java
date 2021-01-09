@@ -1,9 +1,11 @@
 package com.jiavideo.system.server;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jiavideo.auth.dto.ResourceDTO;
 import com.jiavideo.common.enumerate.ExceptionEnum;
 import com.jiavideo.common.excepton.JvException;
 import com.jiavideo.user.dto.LoginUserDTO;
@@ -23,7 +25,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -146,11 +150,37 @@ public class UserServer {
             throw new JvException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
         } else {
             if (user.getPassword().equals(userDTO.getPassword())) {
-                return JSONUtil.toBean(JSONUtil.toJsonStr(user), LoginUserDTO.class);
+                LoginUserDTO loginUserDTO = JSONUtil.toBean(JSONUtil.toJsonStr(user), LoginUserDTO.class);
+                setAuth(loginUserDTO);
+                return loginUserDTO;
             } else {
                 log.error("密码不正确！输入密码：{}，原密码：{}", userDTO.getPassword(), user.getPassword());
                 throw new JvException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
             }
         }
+    }
+
+    /**
+     * 为登录用户获取资源权限
+     *
+     * @param loginUserDTO 登录用户dto
+     */
+    private void setAuth(LoginUserDTO loginUserDTO) {
+        List<ResourceDTO> resourceDTOList = userMapper.findResources(loginUserDTO.getId());
+        loginUserDTO.setResources(resourceDTOList);
+
+        // 整理所有有权限的请求，用于接口拦截
+        HashSet<String> requestSet = new HashSet<>();
+        if (!CollectionUtils.isEmpty(resourceDTOList)) {
+            resourceDTOList.forEach(resourceDTO -> {
+                String requestArr = resourceDTO.getRequest();
+                List<String> requestList = Convert.toList(String.class, requestArr);
+                if (!CollectionUtils.isEmpty(requestList)) {
+                    requestSet.addAll(requestList);
+                }
+            });
+        }
+        log.info("有权限的请求{}", requestSet);
+        loginUserDTO.setRequests(requestSet);
     }
 }
