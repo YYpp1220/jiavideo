@@ -53,9 +53,9 @@
         <!--mapperName 映射名称（dao接口与映射文件的名称） -->
 
         <!--F. enableSelectByExample 是否需要逆向生成条件查询方法。-->
-        <table tableName="resource"
-               domainObjectName="Resource"
-               mapperName="ResourceMapper"
+        <table tableName="role_user"
+               domainObjectName="RoleUser"
+               mapperName="RoleUserMapper"
                enableCountByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" enableUpdateByExample="true"/>
 

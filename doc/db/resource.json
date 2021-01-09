@@ -1,6 +1,4 @@
 [{
-    "id": "00", "name": "欢迎", "page": "welcome"
-}, {
     "id": "01", "name": "系统管理",
     "children": [{
         "id": "0101", "name": "用户管理", "page": "system/user",
