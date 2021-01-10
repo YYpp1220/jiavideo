@@ -127,4 +127,22 @@ Tool = {
 
         return uuid.join('');
     },
+
+    /**
+     * 查找是否有权限
+     * @param id 资源id
+     */
+    hasResource: function (id) {
+        let _this = this;
+        let resources = _this.getLoginUser().resources;
+        if (_this.isEmpty(resources)) {
+            return false;
+        }
+        for (let resource of resources) {
+            if (id === resource.id) {
+                return true;
+            }
+        }
+        return false;
+    },
 };

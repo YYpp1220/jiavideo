@@ -370,7 +370,7 @@
                         <b class="arrow"></b>
                     </li>
 
-                    <li class="">
+                    <li v-show="hasResource('01')" class="">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-file"></i>
 
@@ -384,7 +384,7 @@
                         <b class="arrow"></b>
 
                         <ul class="submenu">
-                            <li class="" id="system-user-sidebar">
+                            <li v-show="hasResource('0101')" class="" id="system-user-sidebar">
                                 <router-link to="/system/user">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     用户管理
@@ -393,7 +393,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="" id="system-resource-sidebar">
+                            <li v-show="hasResource('0102')" class="" id="system-resource-sidebar">
                                 <router-link to="/system/resource">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     资源管理
@@ -402,7 +402,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="" id="system-role-sidebar">
+                            <li v-show="hasResource('0103')" class="" id="system-role-sidebar">
                                 <router-link to="/system/role">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     角色管理
@@ -413,7 +413,7 @@
                         </ul>
                     </li>
 
-                    <li class="">
+                    <li v-show="hasResource('02')" class="">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-file"></i>
 
@@ -427,7 +427,7 @@
                         <b class="arrow"></b>
 
                         <ul class="submenu">
-                            <li class="" id="business-category-sidebar">
+                            <li v-show="hasResource('0201')" class="" id="business-category-sidebar">
                                 <router-link to="/business/category">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     分类管理
@@ -436,7 +436,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="" id="business-course-sidebar">
+                            <li v-show="hasResource('0202')" class="" id="business-course-sidebar">
                                 <router-link to="/business/course">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     课程管理
@@ -445,7 +445,7 @@
                                 <b class="arrow"></b>
                             </li>
 
-                            <li class="" id="business-teacher-sidebar">
+                            <li v-show="hasResource('0203')" class="" id="business-teacher-sidebar">
                                 <router-link to="/business/teacher">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     讲师管理
@@ -472,7 +472,7 @@
 
                         </ul>
                     </li>
-                    <li class="">
+                    <li v-show="hasResource('03')" class="">
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-file"></i>
 
@@ -486,7 +486,7 @@
                         <b class="arrow"></b>
 
                         <ul class="submenu">
-                            <li class="" id="upload-file-sidebar">
+                            <li v-show="hasResource('0301')" class="" id="upload-file-sidebar">
                                 <router-link to="/upload/file">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     文件管理
@@ -570,6 +570,10 @@
             $.getScript('/ace/assets/js/ace.min.js');
 
             _this.loginUser = Tool.getLoginUser();
+
+            if (!_this.hasResourceRouter(_this.$route.name)) {
+                _this.$router.push("/login");
+            }
         },
         watch: {
             $route: {
@@ -577,6 +581,10 @@
                     //sidebar激活样式方法二
                     console.log("----->页面跳转：", val, oldVal);
                     let _this = this;
+                    if (!_this.hasResourceRouter(val.name)) {
+                        _this.$router.push("/login");
+                        return;
+                    }
                     _this.$nextTick(function () {//页面加载完成后执行
                         _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
                     });
@@ -584,6 +592,30 @@
             }
         },
         methods: {
+            /**
+             * 查找是否有权限
+             */
+            hasResourceRouter(router) {
+                let _this = this;
+                let resources = Tool.getLoginUser().resources;
+                if (Tool.isEmpty(resources)) {
+                    return false;
+                }
+                for (let resource of resources) {
+                    if (router === resource.page) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            /**
+             * 查找是否有权限
+             */
+            hasResource(id) {
+                return Tool.hasResource(id);
+            },
+
             login(){
                 this.$router.push("/admin")
             },

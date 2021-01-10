@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.HashSet;
+
 /**
  * 登录网关过滤
  *
@@ -50,6 +52,24 @@ public class LoginGatewayFilter implements GatewayFilter, Ordered {
         }
         LoginUserDTO loginUserDTO = JSONUtil.toBean(loginUser, LoginUserDTO.class);
         log.info("已登录，{}", loginUserDTO.getName());
+
+        // 增加权限校验，gateway里没有loginUserDto，所以全部用json操作（但是我有啊）
+        log.info("接口权限校验，请求地址：{}", path);
+        boolean exist = false;
+        HashSet<String> requests = loginUserDTO.getRequests();
+        for (String request : requests) {
+            if (path.contains(request.substring(1, request.length() - 1))) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist) {
+            log.info("权限校验通过！");
+        } else {
+            log.warn("权限校验未通过！");
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
         return chain.filter(exchange);
     }
 
