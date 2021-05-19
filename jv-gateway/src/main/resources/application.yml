@@ -25,6 +25,8 @@ spring:
               - PUT
               - OPTIONS
               - HEAD
+      default-filters:
+        - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
       # 路由转发
       routes:
         # 对应模块所在名称
